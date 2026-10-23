@@ -1,0 +1,15 @@
+{
+  "age_months": 420,
+  "respondent": "self",
+  "reason": "Caso ficticio: dolor localizado en la planta del pie derecho al caminar, sin golpe previo.",
+  "body_zones": ["right_foot"],
+  "onset": "gradual",
+  "duration": "weeks",
+  "evolution": "stable",
+  "pain": 4,
+  "symptoms": ["none"],
+  "alarms": ["none"],
+  "answers": {},
+  "history": "Caso de demostración. Sin antecedentes relevantes conocidos.",
+  "reviewed": false
+}

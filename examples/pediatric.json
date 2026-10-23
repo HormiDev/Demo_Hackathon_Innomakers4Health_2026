@@ -1,0 +1,15 @@
+{
+  "age_months": 84,
+  "respondent": "companion",
+  "reason": "Caso ficticio: tos y congestión nasal durante varios días, sigue jugando y bebiendo con normalidad.",
+  "body_zones": ["chest"],
+  "onset": "gradual",
+  "duration": "days",
+  "evolution": "stable",
+  "pain": 0,
+  "symptoms": ["cough"],
+  "alarms": ["none"],
+  "answers": {},
+  "history": "Caso pediátrico ficticio para demostrar el formulario. Sin antecedentes relevantes conocidos.",
+  "reviewed": false
+}

@@ -1,0 +1,35 @@
+name: deriva
+services:
+  app:
+    image: deriva:local
+    build:
+      context: .
+      target: runtime
+    network_mode: host
+    environment:
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://127.0.0.1:11434}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-tev1:4b}
+      OLLAMA_TIMEOUT_SECONDS: ${OLLAMA_TIMEOUT_SECONDS:-120}
+      MODEL_CONTEXT_TOKENS: ${MODEL_CONTEXT_TOKENS:-2048}
+      APP_PORT: ${APP_PORT:-8080}
+    init: true
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,noexec,nosuid
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    restart: unless-stopped
+  backend-tests:
+    image: deriva-backend-tests:local
+    build:
+      context: .
+      target: backend-tests
+    profiles: [test]
+    network_mode: none
+  frontend-tests:
+    image: deriva-frontend-tests:local
+    build:
+      context: .
+      target: frontend-tests
+    profiles: [test]
+    network_mode: none
