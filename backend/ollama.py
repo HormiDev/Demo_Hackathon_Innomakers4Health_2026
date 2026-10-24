@@ -38,6 +38,14 @@ class DecisionClient:
         return httpx.AsyncClient(base_url=self.settings.ollama_url, timeout=timeout or self.settings.timeout,
                                 transport=self.transport, trust_env=False)
 
+    # Precarga Tev con una decisión mínima sin datos de pacientes.
+    async def warmup(self):
+        await self.choose(
+            {"purpose": "Demo startup warmup"}, "warmup",
+            "Select the purpose of this request.",
+            {"warmup": "Initialize the demo model.", "other": "Any other purpose."},
+        )
+
     # Comprueba que el modelo instalado ofrece capacidad de decisión.
     async def health(self):
         try:
@@ -69,7 +77,7 @@ class DecisionClient:
             raise ServiceError("invalid_catalog", "El catálogo de opciones no es compatible.", 500)
         questions = {identifier: {"type": "choice", "instructions": instructions, "criteria": criteria}}
         self.check_context(state, questions)
-        payload = {"model": self.settings.model, "state": state, "questions": questions, "keep_alive": "5m"}
+        payload = {"model": self.settings.model, "state": state, "questions": questions, "keep_alive": self.settings.keep_alive}
         try:
             async with self.http() as client:
                 response = await client.post("/v1/systemone", json=payload)

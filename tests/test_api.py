@@ -35,8 +35,9 @@ def valid_transport(request):
 
 # Inyecta el adaptador aislado y restaura dependencias al terminar cada prueba.
 @pytest.fixture
-def client():
+def client(monkeypatch):
     adapter = DecisionClient(Settings(), httpx.MockTransport(valid_transport))
+    monkeypatch.setattr("backend.app.get_client", lambda: adapter)
     app.dependency_overrides[get_client] = lambda: adapter
     with TestClient(app) as test_client:
         yield test_client
@@ -50,6 +51,23 @@ def test_catalog_and_health(client):
     assert response.headers["cache-control"] == "no-store"
     assert client.get("/api/health").json()["status"] == "ready"
     assert client.get("/api/missing").status_code == 404
+
+
+# Cada consulta renueva la permanencia en memoria, también después de la precarga.
+def test_queries_keep_model_loaded_for_one_hour(client, case):
+    paths = []
+
+    def inspect_transport(request):
+        paths.append(request.url.path)
+        assert json.loads(request.content)["keep_alive"] == "1h"
+        return valid_transport(request)
+
+    adapter = DecisionClient(Settings(), httpx.MockTransport(inspect_transport))
+    app.dependency_overrides[get_client] = lambda: adapter
+    assert client.post("/api/next-question", json=case).status_code == 200
+    case["reviewed"] = True
+    assert client.post("/api/classify", json=case).status_code == 200
+    assert paths == ["/v1/systemone", "/v1/systemone"]
 
 
 # Comprueba orden y fidelidad de los porcentajes tras una revisión confirmada.

@@ -1,4 +1,6 @@
 """API stateless y entrega del frontend compilado en el mismo origen."""
+import logging
+from contextlib import asynccontextmanager
 from pathlib import Path
 from time import perf_counter
 
@@ -14,12 +16,29 @@ from backend.schemas import CaseInput, ClassificationOutput, HealthOutput, NextO
 from backend.settings import Settings
 
 settings = Settings()
-app = FastAPI(title="Deriva · API local", version="1.0.0", docs_url=None, redoc_url=None, openapi_url="/api/openapi.json")
+logger = logging.getLogger(__name__)
 
 
 # Crea un adaptador sin guardar entradas ni resultados de consultas anteriores.
 def get_client():
     return DecisionClient(settings)
+
+
+# Carga el modelo antes de servir la demo; permite abrirla aunque Ollama falle.
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    logger.info("Precargando el modelo local de la demo.")
+    try:
+        await get_client().warmup()
+    except ServiceError as exc:
+        logger.warning("No se pudo precargar el modelo local (%s). Se podrá reintentar al consultar.", exc.code)
+    else:
+        logger.info("Modelo local precargado; keep_alive=%s.", settings.keep_alive)
+    yield
+
+
+app = FastAPI(title="Deriva · API local", version="1.0.0", docs_url=None, redoc_url=None,
+              openapi_url="/api/openapi.json", lifespan=lifespan)
 
 
 # Limita el cuerpo antes de validarlo y evita el almacenamiento en caché del navegador.

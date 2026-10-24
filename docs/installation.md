@@ -20,10 +20,13 @@ Compose utiliza `network_mode: host`, adecuado para este equipo Linux. Así, `12
 | `OLLAMA_BASE_URL` | `http://127.0.0.1:11434` | Servicio de inferencia local |
 | `OLLAMA_MODEL` | `tev1:4b` | Nombre exacto del modelo de decisión instalado |
 | `OLLAMA_TIMEOUT_SECONDS` | `120` | Límite de cada petición de inferencia |
+| `OLLAMA_KEEP_ALIVE` | `1h` | Tiempo en memoria tras la precarga y cada consulta |
 | `MODEL_CONTEXT_TOKENS` | `2048` | Presupuesto conservador, incluido margen de plantilla |
 | `APP_PORT` | `8080` | Puerto web accesible desde la red |
 
 `TOKENIZER_PATH` y `STATIC_PATH` son ajustes del proceso Python para desarrollo o empaquetado; normalmente no necesitan cambios. Después de modificar `.env`, ejecuta `make up` para recrear el servicio. `make restart` reinicia el contenedor con su configuración existente.
+
+Al arrancar, el backend espera una decisión mínima de Tev sin datos de pacientes para cargar el modelo antes de servir la demo. La precarga y cada consulta envían `keep_alive: "1h"` de forma predeterminada: el plazo de una hora se renueva con cada petición. Si la precarga falla o supera `OLLAMA_TIMEOUT_SECONDS`, se registra un aviso y la web arranca para permitir comprobar la conexión y reintentar al consultar.
 
 ## Makefile
 
