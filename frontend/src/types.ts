@@ -1,4 +1,13 @@
-export type Option = { id: string; label: string; max_age_months?: number };
+export type Option = { id: string; label: string; max_age_months?: number | null };
+export type Symptom = Option & {
+  zones?: string[];
+  general?: boolean;
+  min_age_months?: number | null;
+  preferred_genders?: CaseData["gender"][];
+  onsets?: string[];
+  durations?: string[];
+  parts?: Record<string, string[]>;
+};
 export type Question = {
   id: string;
   label: string;
@@ -7,12 +16,34 @@ export type Question = {
   zones: string[];
   symptoms: string[];
   max_age_months: number | null;
+  min_age_months?: number | null;
+  genders?: CaseData["gender"][];
+  parts?: Record<string, string[]>;
+  requires_answers?: Record<string, string[]>;
+  answer_or_symptoms?: boolean;
+  skip_if_symptoms?: string[];
+  skip_if_details?: boolean;
+  skip_if_parts?: Record<string, string[]>;
+  allow_unspecified_parts?: boolean;
+  onsets?: string[];
+  durations?: string[];
+  evolutions?: string[];
+  priority?: number;
+  decision_hint?: string;
+};
+export type BodyDetail = {
+  kind: "hand" | "foot" | "arm" | "leg" | "head" | "neck" | "chest" | "abdomen" | "pelvis" | "upper_back" | "lower_back";
+  views: ("front" | "back")[];
+  default_view: "front" | "back";
+  options: (Option & { views: ("front" | "back")[] })[];
 };
 export type CaseData = {
   age_months: number;
+  gender: "female" | "male" | "non_binary" | "other" | "not_specified";
   respondent: "self" | "companion";
   reason: string;
   body_zones: string[];
+  body_details: Record<string, string[]>;
   onset: string;
   duration: string;
   evolution: string;
@@ -27,7 +58,8 @@ export type Catalog = {
   version: string;
   specialties: { id: string; name: string; criteria: string }[];
   body_zones: Option[];
-  symptoms: Option[];
+  body_details: Record<string, BodyDetail>;
+  symptoms: Symptom[];
   alarms: Option[];
   questions: Question[];
   max_followups: number;
@@ -43,6 +75,10 @@ export type NextResult = {
   source: "model" | "rules";
   warnings: string[];
   answered: number;
+  completion_reason?: "model_enough" | "no_candidates" | "limit" | "urgent" | null;
+  candidates_considered?: number;
+  eligible_count?: number;
+  considered_questions?: { id: string; label: string }[];
 };
 export type Result = {
   status: "classified" | "inconclusive" | "urgent";

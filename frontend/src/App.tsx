@@ -22,6 +22,7 @@ import {
   X,
 } from "lucide-react";
 import { BodyMap } from "./BodyMap";
+import { Rankings } from "./Rankings";
 import { Choices, Notice, PainScale } from "./components";
 import {
   api,
@@ -29,10 +30,12 @@ import {
   downloadReport,
   DURATIONS,
   EVOLUTIONS,
+  GENDERS,
   INITIAL_CASE,
   ONSETS,
   readHistory,
   reportText,
+  symptomChoices,
   updateCase,
 } from "./lib";
 import type { CaseData, Catalog, Health, NextResult, Result } from "./types";
@@ -55,8 +58,8 @@ const STEP_TITLES = [
 ];
 const STEP_TEXT = [
   "Cada persona es diferente. Estos datos nos ayudan a adaptar las preguntas a ti.",
-  "Selecciona la zona en el cuerpo y cuéntanos cómo ha evolucionado.",
-  "Algunas señales y síntomas nos ayudan a entender mejor lo que ocurre.",
+  "Selecciona una zona y precisa la localización en la vista ampliada.",
+  "Los síntomas sugeridos se adaptan a los datos del paciente y a la zona de la molestia.",
   "Las siguientes preguntas se eligen según la información que has compartido.",
   "Revisa la información y añade el contexto clínico antes de consultar al modelo.",
   "Una orientación para acompañar la decisión del profesional médico.",
@@ -82,6 +85,14 @@ export function App() {
   const version = useRef(0);
   const heading = useRef<HTMLHeadingElement>(null);
   const fileInput = useRef<HTMLInputElement>(null);
+
+  // Vincula el tema al rol activo y comunica visualmente el relevo de la consulta.
+  useEffect(() => {
+    document.documentElement.dataset.mode = mode;
+    return () => {
+      delete document.documentElement.dataset.mode;
+    };
+  }, [mode]);
 
   // Carga los metadatos públicos sin restaurar ningún caso anterior.
   useEffect(() => {
@@ -109,6 +120,7 @@ export function App() {
   // Mueve el foco al título para anunciar el nuevo paso a lectores de pantalla.
   useEffect(() => {
     heading.current?.focus();
+    document.querySelector(".card-content")?.scrollTo({ top: 0 });
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [step]);
 
@@ -127,6 +139,17 @@ export function App() {
     setMode("patient");
     setData((current) => ({ ...current, reviewed: false }));
     if (step === 5) setStep(4);
+  }
+
+  // Presenta el nuevo rol desde el inicio y conserva el foco en el paso actual.
+  function switchToDoctor() {
+    setMode("doctor");
+    heading.current?.focus({ preventScroll: true });
+    const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? "auto"
+      : "smooth";
+    document.querySelector(".card-content")?.scrollTo({ top: 0, behavior });
+    window.scrollTo({ top: 0, behavior });
   }
 
   // Invalida peticiones antiguas antes de modificar datos o borrar el caso.
@@ -316,6 +339,10 @@ export function App() {
     catalog?.body_zones.filter((zone) => data.body_zones.includes(zone.id)) ||
     [];
   const summary = catalog ? caseSummary(data, catalog) : [];
+  const symptoms = catalog ? symptomChoices(data, catalog) : null;
+  const moreSelected = symptoms
+    ? [...symptoms.related, ...symptoms.other].filter((item) => data.symptoms.includes(item.id)).length
+    : 0;
 
   return (
     <>
@@ -350,7 +377,10 @@ export function App() {
         <div className="page-heading">
           <div>
             <div className="eyebrow">
-              <span /> ORIENTACIÓN CLÍNICA ASISTIDA
+              <span />
+              {mode === "doctor"
+                ? "ESPACIO DEL PROFESIONAL"
+                : "ORIENTACIÓN CLÍNICA ASISTIDA"}
             </div>
             <h1>
               Un camino más claro hacia
@@ -363,21 +393,37 @@ export function App() {
             <div className="orbit orbit-one" />
             <div className="orbit orbit-two" />
             <div className="hero-medical">
-              <HeartPulse size={53} strokeWidth={1.3} />
+              {mode === "doctor" ? (
+                <Stethoscope size={53} strokeWidth={1.3} />
+              ) : (
+                <HeartPulse size={53} strokeWidth={1.3} />
+              )}
             </div>
             <span className="hero-plus">+</span>
-            <Leaf className="hero-leaf" size={25} />
+            {mode === "doctor" ? (
+              <ClipboardCheck className="hero-leaf" size={25} />
+            ) : (
+              <Leaf className="hero-leaf" size={25} />
+            )}
           </div>
         </div>
 
         <div className="workspace-bar">
-          <div className="consultation-label">
+          <div className="consultation-label" role="status" aria-atomic="true">
             <span className="small-icon">
-              <ClipboardCheck size={18} />
+              {mode === "doctor" ? (
+                <Stethoscope size={18} />
+              ) : (
+                <UserRound size={18} />
+              )}
             </span>
             <div>
-              <strong>Nueva orientación</strong>
-              <span>Una consulta, una persona</span>
+              <strong>
+                {mode === "doctor" ? "Revisión clínica" : "Consulta del paciente"}
+              </strong>
+              <span>
+                {mode === "doctor" ? "Revisar y completar" : "Escuchar y comprender"}
+              </span>
             </div>
           </div>
           <div className="mode-switch" aria-label="Modo de uso">
@@ -392,7 +438,7 @@ export function App() {
             <button
               className={mode === "doctor" ? "active" : ""}
               aria-pressed={mode === "doctor"}
-              onClick={() => setMode("doctor")}
+              onClick={switchToDoctor}
             >
               <Stethoscope size={16} />
               Médico
@@ -419,6 +465,7 @@ export function App() {
                       setError("");
                       setStep(index);
                     }}
+                    aria-label={`Paso ${index + 1}: ${label}`}
                     aria-current={index === step ? "step" : undefined}
                   >
                     <span className="step-number">
@@ -511,7 +558,7 @@ export function App() {
               )}
 
               {catalog && step === 0 && (
-                <div className="form-stack">
+                <div className="form-stack patient-form">
                   <div className="welcome-note">
                     <span className="welcome-icon">
                       <UserRound size={23} />
@@ -527,7 +574,7 @@ export function App() {
                       <Sparkles size={20} />
                     </span>
                   </div>
-                  <div className="two-columns">
+                  <div className="two-columns patient-details">
                     <div>
                       <label className="field-label" htmlFor="age">
                         Edad del paciente <span className="required">*</span>
@@ -573,6 +620,28 @@ export function App() {
                         Para bebés, puedes indicar la edad en meses.
                       </p>
                     </div>
+                    <div>
+                      <label className="field-label" htmlFor="gender">
+                        Género del paciente{" "}
+                        <span className="optional">Opcional</span>
+                      </label>
+                      <select
+                        id="gender"
+                        className="gender-select"
+                        value={data.gender}
+                        onChange={(event) =>
+                          update({
+                            gender: event.target.value as CaseData["gender"],
+                          })
+                        }
+                      >
+                        {GENDERS.map((option) => (
+                          <option key={option.id} value={option.id}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                     <Choices
                       label="¿Quién responde?"
                       options={[
@@ -585,7 +654,7 @@ export function App() {
                       }
                     />
                   </div>
-                  <div>
+                  <div className="reason-field">
                     <label className="field-label" htmlFor="reason">
                       ¿Qué te trae a consulta?{" "}
                       <span className="required">*</span>
@@ -595,7 +664,7 @@ export function App() {
                     </p>
                     <textarea
                       id="reason"
-                      rows={4}
+                      rows={3}
                       maxLength={600}
                       placeholder="Por ejemplo: me duele la planta del pie derecho al caminar desde hace unos días…"
                       value={data.reason}
@@ -624,71 +693,127 @@ export function App() {
               )}
 
               {catalog && step === 1 && (
-                <div className="form-stack">
-                  <BodyMap
-                    zones={catalog.body_zones}
-                    selected={data.body_zones}
-                    onChange={(value) => update({ body_zones: value })}
-                  />
-                  <div className="selected-zone-summary">
-                    {selectedZones.length ? (
-                      selectedZones.map((zone) => (
-                        <span key={zone.id}>
-                          {zone.label}
-                          <button
-                            aria-label={`Quitar ${zone.label}`}
-                            onClick={() =>
-                              update({
-                                body_zones: data.body_zones.filter(
-                                  (id) => id !== zone.id,
-                                ),
-                              })
-                            }
-                          >
-                            <X size={12} />
-                          </button>
-                        </span>
-                      ))
-                    ) : (
-                      <p>Selecciona una o varias zonas para continuar.</p>
-                    )}
+                <div className="form-stack discomfort-form">
+                  <div className="form-stack location-fields">
+                    <BodyMap
+                      gender={data.gender}
+                      zones={catalog.body_zones}
+                      selected={data.body_zones}
+                      details={data.body_details}
+                      definitions={catalog.body_details || {}}
+                      onDetailChange={(zone, parts) => {
+                        const details = { ...data.body_details };
+                        if (parts.length) details[zone] = parts;
+                        else delete details[zone];
+                        update({ body_details: details });
+                      }}
+                      onChange={(value) => update({ body_zones: value })}
+                    />
+                    <div className="selected-zone-summary">
+                      {selectedZones.length ? (
+                        selectedZones.map((zone) => (
+                          <span key={zone.id}>
+                            {zone.label}
+                            <button
+                              aria-label={`Quitar ${zone.label}`}
+                              onClick={() =>
+                                update({
+                                  body_zones: data.body_zones.filter(
+                                    (id) => id !== zone.id,
+                                  ),
+                                })
+                              }
+                            >
+                              <X size={12} />
+                            </button>
+                          </span>
+                        ))
+                      ) : (
+                        <p>Selecciona una o varias zonas para continuar.</p>
+                      )}
+                    </div>
                   </div>
-                  <PainScale
-                    value={data.pain}
-                    onChange={(value) => update({ pain: value })}
-                  />
-                  <Choices
-                    label="¿Cómo empezó?"
-                    options={ONSETS}
-                    value={data.onset}
-                    onChange={(value) => update({ onset: value as string })}
-                  />
-                  <Choices
-                    label="¿Desde cuándo ocurre?"
-                    options={DURATIONS}
-                    value={data.duration}
-                    onChange={(value) => update({ duration: value as string })}
-                  />
-                  <Choices
-                    label="¿Cómo ha evolucionado?"
-                    options={EVOLUTIONS}
-                    value={data.evolution}
-                    onChange={(value) => update({ evolution: value as string })}
-                  />
+                  <div className="form-stack discomfort-details">
+                    <PainScale
+                      value={data.pain}
+                      onChange={(value) => update({ pain: value })}
+                    />
+                    <Choices
+                      label="¿Cómo empezó?"
+                      options={ONSETS}
+                      value={data.onset}
+                      onChange={(value) => update({ onset: value as string })}
+                    />
+                    <Choices
+                      label="¿Desde cuándo ocurre?"
+                      options={DURATIONS}
+                      value={data.duration}
+                      onChange={(value) => update({ duration: value as string })}
+                    />
+                    <Choices
+                      label="¿Cómo ha evolucionado?"
+                      options={EVOLUTIONS}
+                      value={data.evolution}
+                      onChange={(value) => update({ evolution: value as string })}
+                    />
+                  </div>
                 </div>
               )}
 
-              {catalog && step === 2 && (
-                <div className="form-stack">
-                  <Choices
-                    label="¿Notas alguno de estos síntomas?"
-                    options={catalog.symptoms}
-                    value={data.symptoms}
-                    multi
-                    onChange={(value) =>
-                      update({ symptoms: value as string[] })
-                    }
-                  />
+              {catalog && symptoms && step === 2 && (
+                <div className="form-stack symptoms-form">
+                  <div className="form-stack symptoms-fields">
+                    <Choices
+                      label="¿Notas alguno de estos síntomas?"
+                      options={symptoms.primary}
+                      value={data.symptoms}
+                      multi
+                      onChange={(value) =>
+                        update({ symptoms: value as string[] })
+                      }
+                    />
+                    {(symptoms.related.length > 0 || symptoms.other.length > 0) && (
+                      <details className="more-symptoms">
+                        <summary>
+                          Más síntomas y otras zonas
+                          {moreSelected > 0 &&
+                            ` · ${moreSelected} ${moreSelected === 1 ? "seleccionado" : "seleccionados"}`}
+                        </summary>
+                        <div className="more-symptoms-content">
+                          <p className="hint">
+                            Puedes indicar otros síntomas aunque no estén entre los sugeridos.
+                          </p>
+                          {symptoms.related.length > 0 && (
+                            <Choices
+                              label="Más síntomas de la zona"
+                              options={symptoms.related}
+                              value={data.symptoms}
+                              multi
+                              onChange={(value) =>
+                                update({ symptoms: value as string[] })
+                              }
+                            />
+                          )}
+                          {symptoms.other.length > 0 && (
+                            <Choices
+                              label="Otros síntomas disponibles"
+                              options={symptoms.other}
+                              value={data.symptoms}
+                              multi
+                              onChange={(value) =>
+                                update({ symptoms: value as string[] })
+                              }
+                            />
+                          )}
+                        </div>
+                      </details>
+                    )}
+                    <p className="hint">
+                      Esta comprobación cubre solo algunas señales. Si hay
+                      preocupación por el estado del paciente, solicita valoración
+                      médica.
+                    </p>
+                  </div>
                   <div className="alarm-section">
                     <div className="section-heading">
                       <ShieldCheck size={20} />
@@ -703,7 +828,7 @@ export function App() {
                       label="Señales que necesitan atención inmediata"
                       options={catalog.alarms.filter(
                         (item) =>
-                          item.max_age_months === undefined ||
+                          item.max_age_months == null ||
                           data.age_months <= item.max_age_months,
                       )}
                       value={data.alarms}
@@ -719,11 +844,6 @@ export function App() {
                       médica inmediata. No esperes al resultado del modelo.
                     </Notice>
                   )}
-                  <p className="hint">
-                    Esta comprobación cubre solo algunas señales. Si hay
-                    preocupación por el estado del paciente, solicita valoración
-                    médica.
-                  </p>
                 </div>
               )}
 
@@ -774,7 +894,7 @@ export function App() {
                   {!busy && !next?.question && (
                     <div className="empty-state">
                       <FileText size={32} />
-                      <h3>Tu información está preparada</h3>
+                      <h3>No se ha seleccionado una pregunta</h3>
                       <p>
                         Puedes reintentar la selección de preguntas o revisar lo
                         recogido con el médico.
@@ -793,6 +913,28 @@ export function App() {
 
               {catalog && step === 4 && (
                 <div className="form-stack">
+                  {next?.status === "complete" && (
+                    <section className="adaptive-review-note" aria-label="Revisión de preguntas a medida">
+                      <Notice>
+                        {next.completion_reason === "model_enough"
+                          ? `Tev ha valorado ${next.candidates_considered || 0} ${next.candidates_considered === 1 ? "pregunta relacionada" : "preguntas relacionadas"} y no propone más por ahora.`
+                          : next.completion_reason === "no_candidates"
+                            ? "No quedan preguntas nuevas que correspondan a las respuestas actuales."
+                            : "No se proponen más preguntas por ahora."}
+                        {Object.keys(data.answers).length === 0
+                          ? " No se ha añadido ninguna pregunta adicional; puedes continuar con la revisión médica."
+                          : " Las respuestas recogidas se incluyen en el resumen para el médico."}
+                      </Notice>
+                      {!!next.considered_questions?.length && (
+                        <details className="adaptive-considered">
+                          <summary>Ver preguntas valoradas ({next.considered_questions.length})</summary>
+                          <ul>
+                            {next.considered_questions.map((question) => <li key={question.id}>{question.label}</li>)}
+                          </ul>
+                        </details>
+                      )}
+                    </section>
+                  )}
                   {next?.warnings.map((warning) => (
                     <Notice danger={urgent} key={warning}>
                       {warning}
@@ -806,9 +948,17 @@ export function App() {
                   )}
                   {mode === "patient" && (
                     <div className="doctor-handoff">
-                      <Stethoscope size={24} />
+                      <div className="handoff-icons" aria-hidden="true">
+                        <span>
+                          <UserRound size={20} />
+                        </span>
+                        <ArrowRight size={16} />
+                        <span>
+                          <Stethoscope size={20} />
+                        </span>
+                      </div>
                       <div>
-                        <strong>Es el momento de revisar juntos</strong>
+                        <strong>Ahora continúa el médico</strong>
                         <p>
                           El médico puede comprobar tus respuestas y añadir el
                           historial en este mismo equipo.
@@ -816,7 +966,7 @@ export function App() {
                       </div>
                       <button
                         className="button secondary"
-                        onClick={() => setMode("doctor")}
+                        onClick={switchToDoctor}
                       >
                         Continuar como médico
                         <ArrowRight size={15} />
@@ -963,14 +1113,27 @@ export function App() {
                           <Stethoscope size={28} />
                         </div>
                         <div>
-                          <span>PRIMER DESTINO SEGÚN EL MODELO</span>
-                          <h3>{result.rankings[0].name}</h3>
-                          <p>Pendiente de decisión médica</p>
+                          <span>
+                            {result.status === "inconclusive"
+                              ? "RESULTADO NO CONCLUYENTE"
+                              : "PRIMER DESTINO SEGÚN EL MODELO"}
+                          </span>
+                          <h3>
+                            {result.status === "inconclusive"
+                              ? "No se ha encontrado un resultado claro"
+                              : result.rankings[0].name}
+                          </h3>
+                          <p>
+                            {result.status === "inconclusive"
+                              ? `Mayor puntuación: ${result.rankings[0].name}. Pendiente de revisión médica.`
+                              : "Pendiente de decisión médica"}
+                          </p>
                         </div>
                         <strong>
                           {(
                             result.rankings[0].probability * 100
                           ).toLocaleString("es-ES", {
+                            minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
                           })}
                           <small>%</small>
@@ -980,45 +1143,14 @@ export function App() {
                         <div>
                           <h3>Orientación por especialidad</h3>
                           <p>
-                            Puntuación relativa del modelo · De mayor a menor
+                            Las cinco primeras opciones · El resto, en «Otros»
                           </p>
                         </div>
-                        <span className="catalog-tag">23 destinos</span>
+                        <span className="catalog-tag">
+                          {result.rankings.length} destinos
+                        </span>
                       </div>
-                      <div className="ranking-list">
-                        {result.rankings.map((item, index) => (
-                          <div
-                            className={`ranking-row ${index === 0 ? "first" : ""}`}
-                            key={item.id}
-                          >
-                            <span className="ranking-number">
-                              {String(index + 1).padStart(2, "0")}
-                            </span>
-                            <div className="ranking-content">
-                              <div>
-                                <span>{item.name}</span>
-                                <strong>
-                                  {(item.probability * 100).toLocaleString(
-                                    "es-ES",
-                                    {
-                                      minimumFractionDigits: 2,
-                                      maximumFractionDigits: 2,
-                                    },
-                                  )}{" "}
-                                  %
-                                </strong>
-                              </div>
-                              <div className="ranking-track">
-                                <span
-                                  style={{
-                                    width: `${item.probability * 100}%`,
-                                  }}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+                      <Rankings rankings={result.rankings} />
                     </>
                   )}
                   <Notice>

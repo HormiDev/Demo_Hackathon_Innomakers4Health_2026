@@ -28,7 +28,7 @@ flowchart LR
 
 El navegador envía el caso completo en cada petición. El servidor no asigna identificadores de paciente ni mantiene sesiones. Antes de clasificar, el médico revisa el resumen y marca la confirmación. El modo médico es una vista de demostración, no una identidad autenticada.
 
-Cambiar una respuesta cancela las peticiones pendientes, revoca la revisión y elimina cualquier resultado anterior. Cambiar la edad reinicia todas las preguntas adicionales para reservar espacio a los mínimos pediátricos. Al cambiar síntomas o localización, se eliminan las respuestas que dejan de ser elegibles y se conservan las pertinentes. Tev recibe el estado actualizado en la siguiente consulta.
+Cambiar una respuesta cancela las peticiones pendientes, revoca la revisión y elimina cualquier resultado anterior. Cambiar edad, género, localización, comienzo o duración reinicia las preguntas adicionales; la edad también reserva espacio a los mínimos pediátricos. Al cambiar síntomas, se eliminan las respuestas que dejan de ser elegibles y se conservan las pertinentes. Las reglas del catálogo adaptan la lista de síntomas y retiran selecciones caducadas al cambiar de zona o edad. El género prioriza sugerencias sin impedir declarar síntomas de otra familia. Tev recibe el estado actualizado en la siguiente consulta.
 
 Las señales de alarma afirmativas tienen prioridad y devuelven una indicación sin clasificación porcentual. Una respuesta «no sé» produce una advertencia para revisión, sin declarar por ello que el caso es seguro.
 
@@ -37,3 +37,5 @@ Las señales de alarma afirmativas tienen prioridad y devuelven una indicación 
 Docker utiliza etapas de dependencias, pruebas y compilación. La etapa final contiene Python, el backend, el tokenizador y los recursos estáticos de Vite. Un único proceso Uvicorn sirve la web y la API. El indicador de salud del contenedor comprueba el servicio web; `/api/health` comprueba por separado la disponibilidad del modelo.
 
 No hay conexión con sistemas hospitalarios, autenticación de profesionales, persistencia ni publicación externa en esta versión.
+
+La localización fina se define en `backend/anatomy.py` y se publica dentro del catálogo. `BodyRegionDetail` interpreta esas opciones sobre ilustraciones vectoriales específicas. El caso conserva `body_details` por región, elimina detalles de regiones retiradas y los traduce para revisión y exportación; el backend valida la relación padre/punto y envía etiquetas legibles al modelo.

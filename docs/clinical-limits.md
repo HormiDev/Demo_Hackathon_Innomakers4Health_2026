@@ -8,6 +8,8 @@ Deriva es una demostración de apoyo a la derivación. No diagnostica enfermedad
 
 Se muestran las probabilidades de las opciones que devuelve Tev, identificadas como puntuaciones del modelo. No son probabilidades de enfermedad ni estimaciones validadas de corrección clínica. Cambiar el catálogo, las descripciones o el contexto puede cambiar la distribución. Un máximo elevado no demuestra que la recomendación sea correcta. «Sin orientación concluyente» es una alternativa explícita del catálogo, no una medida clínica validada de incertidumbre.
 
+La demo conserva los 23 porcentajes aunque no haya un resultado claro: muestra cinco opciones y agrupa el resto en «Otros», con su suma y la posibilidad de expandir el detalle. A efectos de presentación, marca el resultado como no concluyente si gana esa opción del catálogo, si el máximo es inferior al 35 % o si hay menos de 5 puntos porcentuales de diferencia entre las dos primeras opciones. Estos umbrales son convenciones de la demo, no criterios clínicos ni medidas de certeza validadas. Los porcentajes no se modifican ni se redistribuyen.
+
 ## Señales de alarma ilustrativas
 
 El formulario pregunta por dificultad respiratoria intensa, opresión intensa en el pecho, pérdida de conocimiento o alteración repentina de respuesta, cambios marcados de coloración y esfuerzo respiratorio en menores. Si alguna se declara afirmativamente, las reglas devuelven una indicación de valoración inmediata antes de llamar a Tev y sin porcentajes.

@@ -13,7 +13,7 @@ cp .env.example .env
 make
 ```
 
-Abre **http://localhost:8080**. La imagen contiene el frontend y el backend; Compose usa la red del anfitrión para acceder a Ollama en `http://127.0.0.1:11434`. El servicio escucha solo en loopback. La compilación necesita conexión para descargar dependencias y el tokenizador público; el uso posterior de la aplicación es local.
+Abre **http://localhost:8080** en este equipo o **http://IP_DEL_EQUIPO:8080** desde otro dispositivo de la red. La imagen contiene el frontend y el backend; el servicio web escucha en `0.0.0.0`. Compose usa la red del anfitrión para acceder a Ollama en `http://127.0.0.1:11434`. La compilación necesita conexión para descargar dependencias y el tokenizador público; la inferencia se realiza en el equipo anfitrión.
 
 ```sh
 make test        # Pruebas de backend y frontend en contenedores aislados

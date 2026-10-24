@@ -4,6 +4,25 @@
 
 Verificación realizada el **23 de octubre de 2026** en este equipo Linux, con Docker Compose y Ollama `0.40.10`. Los casos utilizados son ficticios y no aportan validación clínica.
 
+## Revisión del cuestionario, 24 de octubre de 2026
+
+Catálogo `1.3.0`: 48 preguntas y 75 síntomas. Se verifican filtros por puntos del mapa, edad, género con prioridad de síntomas explícitos, datos ya recogidos y respuestas encadenadas. Se conservan los mínimos pediátricos y la posibilidad de que Tev termine sin ninguna pregunta discrecional.
+
+- Backend: 100 pruebas superadas, incluidas dependencias anatómicas y elección explícita de `enough` desde cero respuestas.
+- Frontend: 14 pruebas unitarias superadas y compilación TypeScript/Vite correcta.
+- Chrome: 28 recorridos superados en escritorio y móvil; cuatro omisiones previstas de comprobaciones exclusivas de escritorio. La selección del modelo se intercepta en estos recorridos para comprobar de forma reproducible preguntas encadenadas y cierre sin preguntas.
+
+Auditoría adicional con el Tev instalado, sin interceptar la inferencia, usando casos ficticios:
+
+| Contexto | Observación |
+| --- | --- |
+| Mano izquierda, muñeca seleccionada y motivo poco preciso | Antes terminaba con `enough`; tras la revisión pregunta por el gesto que provoca la molestia (`hand_use`) |
+| Cabeza, frente seleccionada y contexto escaso | Selecciona una pregunta de síntomas acompañantes (`head`) |
+| Talón derecho, primeros pasos, relación con reposo y actividad, antecedentes y medidas ya descritos | Termina con `enough` desde cero preguntas; se valoran seis candidatas |
+| Índice izquierdo, bloqueo ya marcado en síntomas | No vuelve a preguntar si se bloquea; el filtro excluye `finger_motion` y Tev pregunta por el uso de la mano |
+
+Estas ejecuciones demuestran que ambos recorridos son posibles; no son una evaluación clínica ni garantizan que Tev elija siempre la mejor pregunta. El texto libre puede interpretarse de manera imperfecta. Los criterios de utilidad y la lista corta no alteran las probabilidades ni imponen una pregunta para completar la demo.
+
 ## Compilación y pruebas
 
 | Comprobación | Resultado |

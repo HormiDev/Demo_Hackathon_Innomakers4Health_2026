@@ -3,20 +3,23 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator, model_validator
 
-from backend.catalog import ALARMS, BODY_ZONES, SYMPTOMS, eligible_questions
+from backend.anatomy import BODY_DETAILS
+from backend.catalog import ALARMS, BODY_ZONES, SYMPTOMS, available_symptoms, eligible_questions
 
 
 class CaseInput(BaseModel):
     model_config = ConfigDict(extra="forbid")
     age_months: int = Field(ge=0, le=1440, strict=True)
+    gender: Literal["female", "male", "non_binary", "other", "not_specified"] = "not_specified"
     respondent: Literal["self", "companion"]
     reason: str = Field(min_length=3, max_length=600)
     body_zones: list[StrictStr] = Field(min_length=1, max_length=17)
+    body_details: dict[StrictStr, list[StrictStr]] = Field(default_factory=dict, max_length=15)
     onset: Literal["sudden", "gradual", "unknown"]
     duration: Literal["hours", "days", "weeks", "months", "years", "unknown"]
     evolution: Literal["improving", "stable", "worsening", "intermittent", "unknown"]
     pain: int | None = Field(default=None, ge=0, le=10, strict=True)
-    symptoms: list[StrictStr] = Field(min_length=1, max_length=16)
+    symptoms: list[StrictStr] = Field(min_length=1, max_length=len(SYMPTOMS))
     alarms: list[StrictStr] = Field(min_length=1, max_length=7)
     answers: dict[str, StrictStr | list[StrictStr]] = Field(default_factory=dict, max_length=8)
     history: str = Field(default="", max_length=1048576)
@@ -41,6 +44,14 @@ class CaseInput(BaseModel):
                 raise ValueError("Hay opciones desconocidas o repetidas.")
             if set(values) & exclusive and len(values) > 1:
                 raise ValueError("No sé o ninguna no se pueden combinar con otras opciones.")
+        for zone, parts in self.body_details.items():
+            definition = BODY_DETAILS.get(zone)
+            if zone not in self.body_zones or definition is None:
+                raise ValueError("El detalle debe pertenecer a una zona seleccionada.")
+            if not parts or len(parts) != len(set(parts)) or not set(parts) <= {item["id"] for item in definition["options"]}:
+                raise ValueError("La localización detallada contiene opciones desconocidas o repetidas.")
+        if not set(self.symptoms) <= {item["id"] for item in available_symptoms(self)}:
+            raise ValueError("Hay síntomas que no corresponden a la edad indicada.")
         if self.age_months > 215 and "child_breathing" in self.alarms:
             raise ValueError("La señal pediátrica solo corresponde a menores.")
         if len(self.history.encode("utf-8")) > 1048576 or "\x00" in self.history:
@@ -76,6 +87,10 @@ class NextOutput(BaseModel):
     warnings: list[str] = Field(default_factory=list)
     answered: int
     max_followups: int = 8
+    completion_reason: Literal["model_enough", "no_candidates", "limit", "urgent"] | None = None
+    candidates_considered: int = 0
+    eligible_count: int = 0
+    considered_questions: list[dict[str, str]] = Field(default_factory=list)
 
 
 class RankedSpecialty(BaseModel):

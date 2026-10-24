@@ -13,7 +13,7 @@
 
 El arranque desactiva el registro de accesos de Uvicorn y el código no registra cuerpos clínicos. Los errores públicos son controlados y omiten los valores de entrada. La configuración de logs, cachés y memoria del Ollama que administra el usuario es independiente; debe revisarse antes de usar datos personales.
 
-La compilación descarga paquetes y un tokenizador público, sin enviar datos clínicos. Una vez construida la imagen, el flujo ordinario solo conecta navegador, backend y Ollama locales.
+La compilación descarga paquetes y un tokenizador público, sin enviar datos clínicos. Una vez construida la imagen, el flujo ordinario conecta el navegador con el servidor web del equipo anfitrión y su Ollama local. El navegador puede acceder desde otro dispositivo de la red mediante la IP del anfitrión.
 
 ## Límite del modo médico
 

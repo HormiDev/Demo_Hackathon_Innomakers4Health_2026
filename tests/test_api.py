@@ -155,7 +155,11 @@ def test_inconclusive_result(client, case):
         return httpx.Response(200, json={"answers": {"referral": answer}})
     app.dependency_overrides[get_client] = lambda: DecisionClient(Settings(), httpx.MockTransport(inconclusive_transport))
     case["reviewed"] = True
-    assert client.post("/api/classify", json=case).json()["status"] == "inconclusive"
+    result = client.post("/api/classify", json=case).json()
+    assert result["status"] == "inconclusive"
+    assert len(result["rankings"]) == 23
+    assert result["rankings"][0]["probability"] == 1
+    assert all(row["probability"] == 0 for row in result["rankings"][1:])
 
 
 # Garantiza que un historial largo no se recorta ni se envía al modelo.
@@ -218,3 +222,108 @@ def test_request_size_and_binary_history(client, case):
     assert client.post("/api/classify", content=b"x" * 1_200_001).status_code == 413
     case["history"] = "abc\x00def"
     assert client.post("/api/classify", json=case).status_code == 422
+
+
+@pytest.mark.parametrize("gender", ["female", "male", "non_binary", "other", "not_specified"])
+def test_gender_reaches_model_and_classification(client, case, gender):
+    from backend.engine import model_state
+
+    case.update(gender=gender, reviewed=True)
+    assert model_state(CaseInput(**case))["gender"] == gender
+    response = client.post("/api/classify", json=case)
+    assert response.status_code == 200, response.text
+    assert response.json()["considered_data"]["gender"] == gender
+
+
+def test_gender_is_optional_for_existing_clients(case):
+    assert CaseInput(**case).gender == "not_specified"
+
+
+@pytest.mark.parametrize("gender", ["invalid", "", None, 42])
+def test_invalid_gender_is_rejected(client, case, gender):
+    case["gender"] = gender
+    assert client.post("/api/next-question", json=case).status_code == 422
+
+
+# Conserva cada porcentaje real aunque el criterio visual de demo marque incertidumbre.
+@pytest.mark.parametrize("top,runner_up,status", [
+    (0.20, 0.10, "inconclusive"),
+    (0.46, 0.44, "inconclusive"),
+    (0.35, 0.10, "classified"),
+    (0.50, 0.45, "classified"),
+])
+def test_demo_uncertainty_keeps_all_percentages(client, case, top, runner_up, status):
+    probabilities = {item["id"]: (1 - top - runner_up) / 21 for item in SPECIALTIES}
+    probabilities.update(podiatry=top, orthopedics=runner_up)
+
+    # Devuelve puntuaciones controladas sin alterar el recorrido real de clasificación.
+    def score_transport(request):
+        return httpx.Response(200, json={"answers": {"referral": {
+            "choice": "podiatry", "probabilities": probabilities,
+        }}})
+
+    app.dependency_overrides[get_client] = lambda: DecisionClient(Settings(), httpx.MockTransport(score_transport))
+    case["reviewed"] = True
+    response = client.post("/api/classify", json=case)
+    assert response.status_code == 200, response.text
+    result = response.json()
+    assert result["status"] == status
+    assert {row["id"]: row["probability"] for row in result["rankings"]} == probabilities
+    if status == "inconclusive":
+        assert any("No se ha encontrado un resultado claro" in warning for warning in result["warnings"])
+
+
+# Admite nuevos síntomas aunque se añadan manualmente fuera del perfil sugerido.
+@pytest.mark.parametrize("symptoms,gender", [
+    (["nail_change"], "not_specified"),
+    (["vision"], "not_specified"),
+    (["menstrual_changes"], "male"),
+    (["testicular_pain"], "female"),
+])
+def test_additional_symptoms_remain_valid(client, case, symptoms, gender):
+    case.update(symptoms=symptoms, gender=gender)
+    response = client.post("/api/next-question", json=case)
+    assert response.status_code == 200, response.text
+
+
+# Rechaza selecciones de lactante caducadas al editar un caso desde otro cliente.
+def test_stale_age_symptom_is_rejected(client, case):
+    case["symptoms"] = ["infant_feeding"]
+    assert client.post("/api/next-question", json=case).status_code == 422
+
+
+# Localiza la zona con su lado y transmite al modelo el detalle con etiquetas legibles.
+def test_body_details_reach_model_and_results(client, case):
+    from backend.engine import model_state
+    case.update(body_zones=["left_hand"], body_details={"left_hand": ["index", "wrist"]}, reviewed=True)
+    state = model_state(CaseInput(**case))
+    assert state["body_details"] == {"Mano izquierda": ["Dedo índice", "Muñeca"]}
+    response = client.post("/api/classify", json=case)
+    assert response.status_code == 200, response.text
+    assert response.json()["considered_data"]["body_details"] == case["body_details"]
+
+
+# Mantiene el detalle opcional para casos de versiones anteriores del formulario.
+def test_body_details_are_optional(case):
+    assert CaseInput(**case).body_details == {}
+
+
+# Rechaza datos finos de otro lado, otra región, opciones inexistentes o duplicadas.
+@pytest.mark.parametrize("details", [
+    {"left_hand": ["index"]}, {"right_foot": ["index"]},
+    {"right_foot": ["heel", "heel"]}, {"right_foot": []},
+    {"unknown": ["heel"]}, {"right_foot": [123]},
+])
+def test_invalid_body_details_are_rejected(client, case, details):
+    case["body_details"] = details
+    assert client.post("/api/next-question", json=case).status_code == 422
+
+
+# Expone ampliaciones para todas las regiones localizables, dejando fuera general/no sé.
+def test_body_detail_catalog(client):
+    catalog = client.get("/api/catalog").json()
+    assert set(catalog["body_details"]) == {item["id"] for item in catalog["body_zones"]} - {"general", "unknown"}
+    for definition in catalog["body_details"].values():
+        assert definition["default_view"] in definition["views"]
+        assert len({item["id"] for item in definition["options"]}) == len(definition["options"])
+        assert all(set(item["views"]) <= set(definition["views"]) for item in definition["options"])

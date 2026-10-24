@@ -9,7 +9,7 @@ Especificación OpenAPI: `http://localhost:8080/api/openapi.json`. Se puede impo
 | Método y ruta | Entrada | Salida |
 | --- | --- | --- |
 | `GET /api/health` | Ninguna | `status`, `model`, `message` |
-| `GET /api/catalog` | Ninguna | Versión, destinos, zonas, síntomas, alarmas, preguntas y límite |
+| `GET /api/catalog` | Ninguna | Versión, destinos, zonas, síntomas con reglas de sugerencia, alarmas, preguntas y límite |
 | `POST /api/next-question` | Caso completo | Estado, pregunta o `null`, origen, advertencias y número respondido |
 | `POST /api/classify` | Caso completo con `reviewed: true` | Estado, destinos ordenados, advertencias, modelo, versión, latencia y datos considerados |
 
@@ -20,9 +20,11 @@ Ejemplo válido: [adult.json](../examples/adult.json). El caso pediátrico está
 | Campo | Tipo y restricciones |
 | --- | --- |
 | `age_months` | Entero estricto, 0–1440; evita ambigüedad en edades de lactantes |
+| `gender` | Opcional: `female`, `male`, `non_binary`, `other`, `not_specified` (por defecto); género declarado, no sexo biológico |
 | `respondent` | `self` o `companion` |
 | `reason` | Texto de 3–600 caracteres, con contenido no vacío |
 | `body_zones` | Lista no vacía de identificadores de `/api/catalog` |
+| `body_details` | Opcional, por defecto `{}`: objeto de zona seleccionada a lista no vacía de puntos del catálogo `body_details`; no admite duplicados ni puntos de otra zona |
 | `onset` | `sudden`, `gradual`, `unknown` |
 | `duration` | `hours`, `days`, `weeks`, `months`, `years`, `unknown` |
 | `evolution` | `improving`, `stable`, `worsening`, `intermittent`, `unknown` |
@@ -40,7 +42,11 @@ No se aceptan campos adicionales. Las opciones excluyentes (`none`, `unknown`; t
 
 `next-question.status`: `question`, `complete`, `limit` o `urgent`. `source` distingue `rules` y `model`. Una pregunta contiene `id`, `label`, `kind`, `options` y condiciones del catálogo.
 
-`classify.status`: `classified`, `inconclusive` o `urgent`. Cada elemento de `rankings` contiene `id`, `name` y `probability` entre 0 y 1. El navegador multiplica por 100 para mostrar porcentajes. `latency_ms` mide la operación de clasificación. En `urgent` por reglas, `rankings` es una lista vacía: no se atribuyen porcentajes al modelo.
+`completion_reason` distingue `model_enough`, `no_candidates`, `limit` y `urgent`; es `null` mientras se pregunta. `candidates_considered` cuenta las candidatas de la última selección de Tev y `eligible_count` las elegibles pendientes antes de acotar. `considered_questions` contiene sus pares `id`/`label`, con un máximo de doce. Estos campos permiten explicar la finalización incluso con cero respuestas, sin inferir un fallo del cuestionario. Las reglas pediátricas y de alarma no hacen una selección con Tev.
+
+Las preguntas publican `parts` por tipo de ampliación, límites de edad, `genders`, contexto temporal, `requires_answers`, `answer_or_symptoms`, exclusiones por síntomas o puntos ya descritos y `decision_hint`. Las condiciones se aplican antes de presentar candidatas; el criterio de utilidad permite al modelo elegir una pregunta o `enough`. `genders` no invalida un síntoma íntimo explícito de otra familia. Una respuesta que pierde su dependencia se rechaza con 422.
+
+`classify.status`: `classified`, `inconclusive` o `urgent`. Cada elemento de `rankings` contiene `id`, `name` y `probability` entre 0 y 1. El navegador multiplica por 100 para mostrar los porcentajes: las cinco primeras opciones aparecen directamente y las restantes se agrupan en «Otros» con su suma y un detalle expandible. Esto se aplica también a resultados `inconclusive`, sin descartar puntuaciones por su valor. La API, la descarga y la impresión conservan todos los destinos. La demo marca como no concluyente una primera opción `inconclusive`, un máximo inferior al 35 % o una diferencia inferior a 5 puntos porcentuales entre las dos primeras opciones; estos criterios de presentación no tienen validación clínica. `latency_ms` mide la operación de clasificación. En `urgent` por reglas, `rankings` es una lista vacía: no se atribuyen porcentajes al modelo.
 
 ## Errores
 
@@ -57,3 +63,11 @@ No se aceptan campos adicionales. Las opciones excluyentes (`none`, `unknown`; t
 | 504 | `model_timeout` | Reintentar o ajustar el tiempo límite |
 
 Los errores de validación incluyen nombres de campos, sin reflejar valores ni cuerpos del caso. No se devuelven errores crudos de Ollama al navegador. Las rutas `/api` inexistentes devuelven JSON 404.
+
+## Reglas de sugerencia de síntomas
+
+Cada opción de `catalog.symptoms` incluye `zones`, `parts`, `general`, `min_age_months`, `max_age_months`, `preferred_genders`, `onsets` y `durations`. Las listas vacías y edades `null` no restringen esa dimensión. `parts` relaciona un tipo de ampliación con puntos, por ejemplo `{"hand": ["wrist"]}`; sin detalle seleccionado se conserva el perfil regional. `preferred_genders` prioriza la lista principal; no impide añadir otras opciones. El frontend interpreta estos metadatos sin peticiones de inferencia. La API valida edad, identificadores y exclusividad, pero acepta síntomas declarados manualmente de otro punto, zona o familia íntima. La cantidad máxima de síntomas es el tamaño del catálogo; no se mantiene el antiguo límite de 16.
+
+## Localización detallada
+
+`GET /api/catalog` publica `body_details`, un objeto por región con `kind`, vistas `front`/`back`, `default_view` y opciones con `id`, `label` y `views`. Por ejemplo, un caso puede incluir `"body_zones": ["left_hand"]` y `"body_details": {"left_hand": ["index", "wrist"]}`. La API valida los puntos y exige que su región esté seleccionada; `general` y `unknown` no tienen ampliación. No es obligatorio precisar ninguna región. La clasificación devuelve el detalle original en `considered_data`; el estado enviado al modelo utiliza los nombres legibles de la zona y sus puntos.
