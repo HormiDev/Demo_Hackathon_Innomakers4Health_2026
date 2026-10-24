@@ -51,6 +51,8 @@ Precisar una muñeca prioriza chasquidos y uso de la mano; un dedo, bloqueo, hor
 
 El género declarado solo prioriza sugerencias íntimas: no permite inferir anatomía. Con género no especificado, no binario u otro se consideran ambas familias. Cualquier persona puede añadir manualmente síntomas íntimos de la otra familia desde la lista adicional. Cambiar el género conserva síntomas reales ya declarados y solicita confirmar de nuevo «Ninguno/No sé».
 
+Desde la revisión de calidad `1.3.1`, el género se conserva para la adaptación y en el informe, pero se excluye de la entrada que puntúa los destinos. Así, cambiar solo ese campo no modifica el contexto clínico de clasificación. Los síntomas íntimos explícitos se mantienen. El desplegable de datos del resultado explica esta exclusión.
+
 Cambiar la zona o el contexto temporal elimina selecciones que ya no coinciden; cambiar la edad retira las opciones que han caducado. Estos cambios reinician las respuestas adaptativas y revocan la revisión. Un síntoma de otra zona puede declararse manualmente: la API no lo rechaza por la zona ni por el género. Las señales de alarma no se filtran por la región ni el género.
 
 Las reglas son de presentación de la demo y requieren revisión clínica. Como referencia ilustrativa se han consultado las páginas del NHS sobre [dolor de mano](https://www.nhs.uk/symptoms/hand-pain/), [dolor del pie](https://www.nhs.uk/symptoms/foot-pain/pain-in-the-bottom-of-the-foot/), [dolor pélvico](https://www.nhs.uk/symptoms/pelvic-pain/) y [síntomas de enfermedad en menores](https://www.nhs.uk/baby/health/when-to-get-urgent-medical-help-for-babies-and-children-under-5/); no constituyen una validación de estos perfiles ni de sus límites de edad.

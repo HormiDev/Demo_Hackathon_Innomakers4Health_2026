@@ -1,0 +1,1157 @@
+{
+  "timestamp_utc": "2026-10-24T01:15:57.466935+00:00",
+  "clinical_validation": false,
+  "model": "tev1:4b",
+  "catalog_version": "1.3.1",
+  "summary": {
+    "runs": 34,
+    "failed_runs": 0,
+    "status_counts": {
+      "classified": 24,
+      "inconclusive": 6,
+      "urgent": 4
+    },
+    "review_notes": 0,
+    "varying_cases": [
+      "muneca_poco_contexto",
+      "pediatrico"
+    ],
+    "median_total_ms": 1243.0
+  },
+  "cases": [
+    {
+      "id": "talon_completo",
+      "repetition": 1,
+      "questions": [],
+      "completion": "complete",
+      "status": "classified",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 1779,
+      "top3": [
+        {
+          "id": "podiatry",
+          "name": "Podología",
+          "probability": 0.9671223934013207
+        },
+        {
+          "id": "orthopedics",
+          "name": "Traumatología",
+          "probability": 0.021913129614511643
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.00756758914568782
+        }
+      ]
+    },
+    {
+      "id": "muneca_poco_contexto",
+      "repetition": 1,
+      "questions": [
+        "hand_use",
+        "joint",
+        "wrist_load",
+        "activity",
+        "injury",
+        "hand_sensation"
+      ],
+      "completion": "complete",
+      "status": "classified",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 3237,
+      "top3": [
+        {
+          "id": "orthopedics",
+          "name": "Traumatología",
+          "probability": 0.7568309176478021
+        },
+        {
+          "id": "rheumatology",
+          "name": "Reumatología",
+          "probability": 0.21530671794575548
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.02244337033341802
+        }
+      ]
+    },
+    {
+      "id": "indice_bloqueo",
+      "repetition": 1,
+      "questions": [
+        "hand_use"
+      ],
+      "completion": "complete",
+      "status": "classified",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 1317,
+      "top3": [
+        {
+          "id": "orthopedics",
+          "name": "Traumatología",
+          "probability": 0.8040521620434462
+        },
+        {
+          "id": "rheumatology",
+          "name": "Reumatología",
+          "probability": 0.14219025379293423
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.034243936504469746
+        }
+      ]
+    },
+    {
+      "id": "ojo_izquierdo",
+      "repetition": 1,
+      "questions": [
+        "injury",
+        "eye_context"
+      ],
+      "completion": "complete",
+      "status": "classified",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 1612,
+      "top3": [
+        {
+          "id": "ophthalmology",
+          "name": "Oftalmología",
+          "probability": 0.9933469802029613
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.0029374566150216354
+        },
+        {
+          "id": "pediatrics",
+          "name": "Pediatría",
+          "probability": 0.0019210556338749559
+        }
+      ]
+    },
+    {
+      "id": "oido_izquierdo",
+      "repetition": 1,
+      "questions": [],
+      "completion": "complete",
+      "status": "classified",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 866,
+      "top3": [
+        {
+          "id": "ent",
+          "name": "Otorrinolaringología",
+          "probability": 0.9905585527031331
+        },
+        {
+          "id": "pediatrics",
+          "name": "Pediatría",
+          "probability": 0.006680189524327516
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.001759692531659394
+        }
+      ]
+    },
+    {
+      "id": "rodilla",
+      "repetition": 1,
+      "questions": [
+        "joint"
+      ],
+      "completion": "complete",
+      "status": "classified",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 1227,
+      "top3": [
+        {
+          "id": "orthopedics",
+          "name": "Traumatología",
+          "probability": 0.8445007527037356
+        },
+        {
+          "id": "rheumatology",
+          "name": "Reumatología",
+          "probability": 0.13666971713336873
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.014224303097328042
+        }
+      ]
+    },
+    {
+      "id": "urinario_mujer",
+      "repetition": 1,
+      "questions": [],
+      "completion": "complete",
+      "status": "classified",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 862,
+      "top3": [
+        {
+          "id": "urology",
+          "name": "Urología",
+          "probability": 0.8582245864935881
+        },
+        {
+          "id": "gynecology",
+          "name": "Ginecología y Obstetricia",
+          "probability": 0.08339194601532857
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.05079459050559048
+        }
+      ]
+    },
+    {
+      "id": "urinario_hombre",
+      "repetition": 1,
+      "questions": [
+        "pelvic_context"
+      ],
+      "completion": "complete",
+      "status": "classified",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 1230,
+      "top3": [
+        {
+          "id": "urology",
+          "name": "Urología",
+          "probability": 0.9379746533798508
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.0435104155211518
+        },
+        {
+          "id": "pediatrics",
+          "name": "Pediatría",
+          "probability": 0.012056599771506533
+        }
+      ]
+    },
+    {
+      "id": "testicular_genero_mujer",
+      "repetition": 1,
+      "questions": [
+        "genital_context"
+      ],
+      "completion": "complete",
+      "status": "classified",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 1274,
+      "top3": [
+        {
+          "id": "urology",
+          "name": "Urología",
+          "probability": 0.9714333304956797
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.014997703536578496
+        },
+        {
+          "id": "pediatrics",
+          "name": "Pediatría",
+          "probability": 0.010992580191022876
+        }
+      ]
+    },
+    {
+      "id": "menstrual_genero_hombre",
+      "repetition": 1,
+      "questions": [
+        "abdominal_pattern"
+      ],
+      "completion": "complete",
+      "status": "classified",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 1256,
+      "top3": [
+        {
+          "id": "gynecology",
+          "name": "Ginecología y Obstetricia",
+          "probability": 0.921284729658375
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.037622751846364294
+        },
+        {
+          "id": "gastroenterology",
+          "name": "Digestivo",
+          "probability": 0.030343725061282547
+        }
+      ]
+    },
+    {
+      "id": "inespecifico",
+      "repetition": 1,
+      "questions": [],
+      "completion": "complete",
+      "status": "inconclusive",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 795,
+      "top3": [
+        {
+          "id": "inconclusive",
+          "name": "Sin orientación concluyente",
+          "probability": 0.581591293964915
+        },
+        {
+          "id": "internal_medicine",
+          "name": "Medicina Interna",
+          "probability": 0.38670425403834346
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.023470583983709815
+        }
+      ]
+    },
+    {
+      "id": "pediatrico",
+      "repetition": 1,
+      "questions": [
+        "child_intake",
+        "child_behavior",
+        "chest",
+        "breathing"
+      ],
+      "completion": "complete",
+      "status": "inconclusive",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 1645,
+      "top3": [
+        {
+          "id": "pulmonology",
+          "name": "Neumología",
+          "probability": 0.47856080516840044
+        },
+        {
+          "id": "pediatrics",
+          "name": "Pediatría",
+          "probability": 0.4667025449880382
+        },
+        {
+          "id": "ent",
+          "name": "Otorrinolaringología",
+          "probability": 0.05311336313036724
+        }
+      ]
+    },
+    {
+      "id": "lactante",
+      "repetition": 1,
+      "questions": [
+        "child_intake",
+        "child_behavior",
+        "infant"
+      ],
+      "completion": "complete",
+      "status": "classified",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 852,
+      "top3": [
+        {
+          "id": "pediatrics",
+          "name": "Pediatría",
+          "probability": 0.9712186428441224
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.02426367158410996
+        },
+        {
+          "id": "inconclusive",
+          "name": "Sin orientación concluyente",
+          "probability": 0.0035654148741919352
+        }
+      ]
+    },
+    {
+      "id": "alarma_adulto",
+      "repetition": 1,
+      "questions": [],
+      "completion": "urgent",
+      "status": "urgent",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 7,
+      "top3": []
+    },
+    {
+      "id": "alarma_menor",
+      "repetition": 1,
+      "questions": [],
+      "completion": "urgent",
+      "status": "urgent",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 5,
+      "top3": []
+    },
+    {
+      "id": "alarmas_desconocidas",
+      "repetition": 1,
+      "questions": [],
+      "completion": "complete",
+      "status": "inconclusive",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 750,
+      "top3": [
+        {
+          "id": "inconclusive",
+          "name": "Sin orientación concluyente",
+          "probability": 0.592897194533435
+        },
+        {
+          "id": "internal_medicine",
+          "name": "Medicina Interna",
+          "probability": 0.3843512963546987
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.014456281643350121
+        }
+      ]
+    },
+    {
+      "id": "dos_zonas",
+      "repetition": 1,
+      "questions": [
+        "eye_context"
+      ],
+      "completion": "complete",
+      "status": "classified",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 1344,
+      "top3": [
+        {
+          "id": "ophthalmology",
+          "name": "Oftalmología",
+          "probability": 0.42748291366051727
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.3549687806667437
+        },
+        {
+          "id": "internal_medicine",
+          "name": "Medicina Interna",
+          "probability": 0.08576868986018071
+        }
+      ]
+    },
+    {
+      "id": "talon_completo",
+      "repetition": 2,
+      "questions": [],
+      "completion": "complete",
+      "status": "classified",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 898,
+      "top3": [
+        {
+          "id": "podiatry",
+          "name": "Podología",
+          "probability": 0.9675327465123343
+        },
+        {
+          "id": "orthopedics",
+          "name": "Traumatología",
+          "probability": 0.021615797789260757
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.007457563807790269
+        }
+      ]
+    },
+    {
+      "id": "muneca_poco_contexto",
+      "repetition": 2,
+      "questions": [
+        "hand_use",
+        "joint",
+        "wrist_load",
+        "injury",
+        "activity",
+        "hand_sensation"
+      ],
+      "completion": "complete",
+      "status": "classified",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 3214,
+      "top3": [
+        {
+          "id": "orthopedics",
+          "name": "Traumatología",
+          "probability": 0.7804841839640174
+        },
+        {
+          "id": "rheumatology",
+          "name": "Reumatología",
+          "probability": 0.18790448268242582
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.025413523399596797
+        }
+      ]
+    },
+    {
+      "id": "indice_bloqueo",
+      "repetition": 2,
+      "questions": [
+        "hand_use"
+      ],
+      "completion": "complete",
+      "status": "classified",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 1308,
+      "top3": [
+        {
+          "id": "orthopedics",
+          "name": "Traumatología",
+          "probability": 0.8040521620434462
+        },
+        {
+          "id": "rheumatology",
+          "name": "Reumatología",
+          "probability": 0.14219025379293423
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.034243936504469746
+        }
+      ]
+    },
+    {
+      "id": "ojo_izquierdo",
+      "repetition": 2,
+      "questions": [
+        "injury",
+        "eye_context"
+      ],
+      "completion": "complete",
+      "status": "classified",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 1604,
+      "top3": [
+        {
+          "id": "ophthalmology",
+          "name": "Oftalmología",
+          "probability": 0.9933469802029613
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.0029374566150216354
+        },
+        {
+          "id": "pediatrics",
+          "name": "Pediatría",
+          "probability": 0.0019210556338749559
+        }
+      ]
+    },
+    {
+      "id": "oido_izquierdo",
+      "repetition": 2,
+      "questions": [],
+      "completion": "complete",
+      "status": "classified",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 839,
+      "top3": [
+        {
+          "id": "ent",
+          "name": "Otorrinolaringología",
+          "probability": 0.9905585527031331
+        },
+        {
+          "id": "pediatrics",
+          "name": "Pediatría",
+          "probability": 0.006680189524327516
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.001759692531659394
+        }
+      ]
+    },
+    {
+      "id": "rodilla",
+      "repetition": 2,
+      "questions": [
+        "joint"
+      ],
+      "completion": "complete",
+      "status": "classified",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 1258,
+      "top3": [
+        {
+          "id": "orthopedics",
+          "name": "Traumatología",
+          "probability": 0.8445007527037356
+        },
+        {
+          "id": "rheumatology",
+          "name": "Reumatología",
+          "probability": 0.13666971713336873
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.014224303097328042
+        }
+      ]
+    },
+    {
+      "id": "urinario_mujer",
+      "repetition": 2,
+      "questions": [],
+      "completion": "complete",
+      "status": "classified",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 838,
+      "top3": [
+        {
+          "id": "urology",
+          "name": "Urología",
+          "probability": 0.8705369665077163
+        },
+        {
+          "id": "gynecology",
+          "name": "Ginecología y Obstetricia",
+          "probability": 0.07163898209125669
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.05064069968693633
+        }
+      ]
+    },
+    {
+      "id": "urinario_hombre",
+      "repetition": 2,
+      "questions": [
+        "pelvic_context"
+      ],
+      "completion": "complete",
+      "status": "classified",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 1377,
+      "top3": [
+        {
+          "id": "urology",
+          "name": "Urología",
+          "probability": 0.9369062149388463
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.042799624885081565
+        },
+        {
+          "id": "pediatrics",
+          "name": "Pediatría",
+          "probability": 0.01337274036108185
+        }
+      ]
+    },
+    {
+      "id": "testicular_genero_mujer",
+      "repetition": 2,
+      "questions": [
+        "genital_context"
+      ],
+      "completion": "complete",
+      "status": "classified",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 1268,
+      "top3": [
+        {
+          "id": "urology",
+          "name": "Urología",
+          "probability": 0.9725230793155543
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.015619787211734949
+        },
+        {
+          "id": "pediatrics",
+          "name": "Pediatría",
+          "probability": 0.00944859757826209
+        }
+      ]
+    },
+    {
+      "id": "menstrual_genero_hombre",
+      "repetition": 2,
+      "questions": [
+        "abdominal_pattern"
+      ],
+      "completion": "complete",
+      "status": "classified",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 1290,
+      "top3": [
+        {
+          "id": "gynecology",
+          "name": "Ginecología y Obstetricia",
+          "probability": 0.921284729658375
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.037622751846364294
+        },
+        {
+          "id": "gastroenterology",
+          "name": "Digestivo",
+          "probability": 0.030343725061282547
+        }
+      ]
+    },
+    {
+      "id": "inespecifico",
+      "repetition": 2,
+      "questions": [],
+      "completion": "complete",
+      "status": "inconclusive",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 774,
+      "top3": [
+        {
+          "id": "inconclusive",
+          "name": "Sin orientación concluyente",
+          "probability": 0.5996470948664206
+        },
+        {
+          "id": "internal_medicine",
+          "name": "Medicina Interna",
+          "probability": 0.3727137439668424
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.018532555537000013
+        }
+      ]
+    },
+    {
+      "id": "pediatrico",
+      "repetition": 2,
+      "questions": [
+        "child_intake",
+        "child_behavior",
+        "chest",
+        "breathing"
+      ],
+      "completion": "complete",
+      "status": "inconclusive",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 1606,
+      "top3": [
+        {
+          "id": "pediatrics",
+          "name": "Pediatría",
+          "probability": 0.4895386781444761
+        },
+        {
+          "id": "pulmonology",
+          "name": "Neumología",
+          "probability": 0.45332994362994766
+        },
+        {
+          "id": "ent",
+          "name": "Otorrinolaringología",
+          "probability": 0.055422265580827024
+        }
+      ]
+    },
+    {
+      "id": "lactante",
+      "repetition": 2,
+      "questions": [
+        "child_intake",
+        "child_behavior",
+        "infant"
+      ],
+      "completion": "complete",
+      "status": "classified",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 875,
+      "top3": [
+        {
+          "id": "pediatrics",
+          "name": "Pediatría",
+          "probability": 0.9711762965505009
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.0245668813429134
+        },
+        {
+          "id": "inconclusive",
+          "name": "Sin orientación concluyente",
+          "probability": 0.0032948300938678552
+        }
+      ]
+    },
+    {
+      "id": "alarma_adulto",
+      "repetition": 2,
+      "questions": [],
+      "completion": "urgent",
+      "status": "urgent",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 12,
+      "top3": []
+    },
+    {
+      "id": "alarma_menor",
+      "repetition": 2,
+      "questions": [],
+      "completion": "urgent",
+      "status": "urgent",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 6,
+      "top3": []
+    },
+    {
+      "id": "alarmas_desconocidas",
+      "repetition": 2,
+      "questions": [],
+      "completion": "complete",
+      "status": "inconclusive",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 736,
+      "top3": [
+        {
+          "id": "inconclusive",
+          "name": "Sin orientación concluyente",
+          "probability": 0.6024650290177631
+        },
+        {
+          "id": "internal_medicine",
+          "name": "Medicina Interna",
+          "probability": 0.3739135480222557
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.014557222588112357
+        }
+      ]
+    },
+    {
+      "id": "dos_zonas",
+      "repetition": 2,
+      "questions": [
+        "eye_context"
+      ],
+      "completion": "complete",
+      "status": "classified",
+      "technical_errors": [],
+      "review_notes": [],
+      "total_ms": 1332,
+      "top3": [
+        {
+          "id": "ophthalmology",
+          "name": "Oftalmología",
+          "probability": 0.4144145819451118
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.3628444644211122
+        },
+        {
+          "id": "internal_medicine",
+          "name": "Medicina Interna",
+          "probability": 0.09294085415112405
+        }
+      ]
+    }
+  ],
+  "gender_before": [
+    {
+      "gender": "female",
+      "status": "classified",
+      "top3": [
+        {
+          "id": "gynecology",
+          "name": "Ginecología y Obstetricia",
+          "probability": 0.9575925766866848
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.02343142541023706
+        },
+        {
+          "id": "gastroenterology",
+          "name": "Digestivo",
+          "probability": 0.0163798757098112
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "status": "classified",
+      "top3": [
+        {
+          "id": "gastroenterology",
+          "name": "Digestivo",
+          "probability": 0.4705467467515497
+        },
+        {
+          "id": "gynecology",
+          "name": "Ginecología y Obstetricia",
+          "probability": 0.3110218998251722
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.10342574940996045
+        }
+      ]
+    },
+    {
+      "gender": "non_binary",
+      "status": "classified",
+      "top3": [
+        {
+          "id": "gynecology",
+          "name": "Ginecología y Obstetricia",
+          "probability": 0.916925817672051
+        },
+        {
+          "id": "gastroenterology",
+          "name": "Digestivo",
+          "probability": 0.04460221947430721
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.0265103496267598
+        }
+      ]
+    },
+    {
+      "gender": "other",
+      "status": "classified",
+      "top3": [
+        {
+          "id": "gynecology",
+          "name": "Ginecología y Obstetricia",
+          "probability": 0.8861811861113265
+        },
+        {
+          "id": "gastroenterology",
+          "name": "Digestivo",
+          "probability": 0.05638636893307911
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.044069143927574966
+        }
+      ]
+    },
+    {
+      "gender": "not_specified",
+      "status": "classified",
+      "top3": [
+        {
+          "id": "gynecology",
+          "name": "Ginecología y Obstetricia",
+          "probability": 0.9130281983511571
+        },
+        {
+          "id": "gastroenterology",
+          "name": "Digestivo",
+          "probability": 0.040726332524641265
+        },
+        {
+          "id": "primary_care",
+          "name": "Atención Primaria",
+          "probability": 0.034160655250115364
+        }
+      ]
+    }
+  ],
+  "gender_after": {
+    "different_winners": 1,
+    "max_probability_spread": 0.0,
+    "cases": [
+      {
+        "gender": "female",
+        "status": "classified",
+        "top3": [
+          {
+            "id": "gynecology",
+            "name": "Ginecología y Obstetricia",
+            "probability": 0.921284729658375
+          },
+          {
+            "id": "primary_care",
+            "name": "Atención Primaria",
+            "probability": 0.037622751846364294
+          },
+          {
+            "id": "gastroenterology",
+            "name": "Digestivo",
+            "probability": 0.030343725061282547
+          }
+        ]
+      },
+      {
+        "gender": "male",
+        "status": "classified",
+        "top3": [
+          {
+            "id": "gynecology",
+            "name": "Ginecología y Obstetricia",
+            "probability": 0.921284729658375
+          },
+          {
+            "id": "primary_care",
+            "name": "Atención Primaria",
+            "probability": 0.037622751846364294
+          },
+          {
+            "id": "gastroenterology",
+            "name": "Digestivo",
+            "probability": 0.030343725061282547
+          }
+        ]
+      },
+      {
+        "gender": "non_binary",
+        "status": "classified",
+        "top3": [
+          {
+            "id": "gynecology",
+            "name": "Ginecología y Obstetricia",
+            "probability": 0.921284729658375
+          },
+          {
+            "id": "primary_care",
+            "name": "Atención Primaria",
+            "probability": 0.037622751846364294
+          },
+          {
+            "id": "gastroenterology",
+            "name": "Digestivo",
+            "probability": 0.030343725061282547
+          }
+        ]
+      },
+      {
+        "gender": "other",
+        "status": "classified",
+        "top3": [
+          {
+            "id": "gynecology",
+            "name": "Ginecología y Obstetricia",
+            "probability": 0.921284729658375
+          },
+          {
+            "id": "primary_care",
+            "name": "Atención Primaria",
+            "probability": 0.037622751846364294
+          },
+          {
+            "id": "gastroenterology",
+            "name": "Digestivo",
+            "probability": 0.030343725061282547
+          }
+        ]
+      },
+      {
+        "gender": "not_specified",
+        "status": "classified",
+        "top3": [
+          {
+            "id": "gynecology",
+            "name": "Ginecología y Obstetricia",
+            "probability": 0.921284729658375
+          },
+          {
+            "id": "primary_care",
+            "name": "Atención Primaria",
+            "probability": 0.037622751846364294
+          },
+          {
+            "id": "gastroenterology",
+            "name": "Digestivo",
+            "probability": 0.030343725061282547
+          }
+        ]
+      }
+    ]
+  }
+}

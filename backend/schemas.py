@@ -107,4 +107,5 @@ class ClassificationOutput(BaseModel):
     catalog_version: str
     latency_ms: int
     considered_data: dict
+    model_input_exclusions: list[str] = Field(default_factory=list)
     label: str = "Puntuaciones del modelo; no son probabilidades clínicas validadas."

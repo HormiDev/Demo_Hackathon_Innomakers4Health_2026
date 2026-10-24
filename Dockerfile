@@ -25,11 +25,13 @@ RUN pip install --no-cache-dir -r backend/requirements-dev.txt
 COPY tests/ ./tests/
 COPY examples/ ./examples/
 COPY scripts/live_check.py ./scripts/live_check.py
+COPY scripts/quality_check.py ./scripts/quality_check.py
 CMD ["python", "-m", "pytest", "-q", "tests"]
 
 FROM backend-base AS runtime
 COPY --from=frontend-build /web/dist ./frontend/dist
 COPY scripts/live_check.py ./scripts/live_check.py
+COPY scripts/quality_check.py ./scripts/quality_check.py
 COPY examples/ ./examples/
 RUN useradd --uid 10001 --no-create-home appuser
 USER appuser

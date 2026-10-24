@@ -239,6 +239,53 @@ def test_gender_is_optional_for_existing_clients(case):
     assert CaseInput(**case).gender == "not_specified"
 
 
+# El mismo contexto clínico produce la misma petición aunque cambie solo el género.
+def test_referral_does_not_infer_anatomy_from_gender(client, case):
+    captured = []
+
+    def inspect_transport(request):
+        payload = json.loads(request.content)
+        captured.append(payload["state"])
+        return valid_transport(request)
+
+    app.dependency_overrides[get_client] = lambda: DecisionClient(Settings(), httpx.MockTransport(inspect_transport))
+    case.update(body_zones=["abdomen"], body_details={"abdomen": ["lower_center"]},
+                symptoms=["menstrual_changes"], answers={"abdominal_pattern": "cramps"}, reviewed=True)
+    for gender in ["female", "male", "non_binary", "other", "not_specified"]:
+        case["gender"] = gender
+        response = client.post("/api/classify", json=case)
+        assert response.status_code == 200, response.text
+        assert response.json()["model_input_exclusions"] == ["gender"]
+        assert response.json()["considered_data"]["gender"] == gender
+    assert len(captured) == 5 and all(state == captured[0] for state in captured)
+    assert "gender" not in captured[0]
+    assert captured[0]["symptoms"] == ["menstrual_changes"]
+    assert captured[0]["body_detail_ids"] == {"abdomen": ["lower_center"]}
+    assert captured[0]["clinical_history_untrusted_text"] == case["history"]
+
+
+# Todas las señales afirmativas se resuelven antes del modelo, también con un historial extenso.
+@pytest.mark.parametrize("age", [4, 84, 216, 1440])
+def test_every_alarm_bypasses_model_and_long_context(client, case, age):
+    from backend.catalog import ALARMS
+
+    def forbidden_transport(_request):
+        raise AssertionError("Una alarma afirmativa no debe consultar al modelo")
+
+    app.dependency_overrides[get_client] = lambda: DecisionClient(Settings(), httpx.MockTransport(forbidden_transport))
+    case.update(age_months=age, reviewed=True, history="Contexto ficticio extenso. " * 1000)
+    for alarm in ALARMS:
+        if alarm["id"] in {"none", "unknown"} or (alarm.get("max_age_months") is not None and age > alarm["max_age_months"]):
+            continue
+        case["alarms"] = [alarm["id"]]
+        response = client.post("/api/next-question", json=case)
+        assert response.status_code == 200, response.text
+        assert response.json()["status"] == "urgent" and response.json()["source"] == "rules"
+        response = client.post("/api/classify", json=case)
+        assert response.status_code == 200, response.text
+        assert response.json()["status"] == "urgent" and response.json()["rankings"] == []
+
+
 @pytest.mark.parametrize("gender", ["invalid", "", None, 42])
 def test_invalid_gender_is_rejected(client, case, gender):
     case["gender"] = gender

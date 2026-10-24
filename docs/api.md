@@ -48,6 +48,8 @@ Las preguntas publican `parts` por tipo de ampliación, límites de edad, `gende
 
 `classify.status`: `classified`, `inconclusive` o `urgent`. Cada elemento de `rankings` contiene `id`, `name` y `probability` entre 0 y 1. El navegador multiplica por 100 para mostrar los porcentajes: las cinco primeras opciones aparecen directamente y las restantes se agrupan en «Otros» con su suma y un detalle expandible. Esto se aplica también a resultados `inconclusive`, sin descartar puntuaciones por su valor. La API, la descarga y la impresión conservan todos los destinos. La demo marca como no concluyente una primera opción `inconclusive`, un máximo inferior al 35 % o una diferencia inferior a 5 puntos porcentuales entre las dos primeras opciones; estos criterios de presentación no tienen validación clínica. `latency_ms` mide la operación de clasificación. En `urgent` por reglas, `rankings` es una lista vacía: no se atribuyen porcentajes al modelo.
 
+`considered_data` conserva el caso recogido y revisado. `model_input_exclusions` declara los campos que no se transmiten para puntuar destinos: actualmente `["gender"]` en respuestas del modelo. El género declarado adapta el formulario, pero no identifica la anatomía clínica; la clasificación utiliza los síntomas y localizaciones explícitos independientemente de ese campo. No se ocultan ni eliminan esos datos del resumen o informe. Las respuestas urgentes por reglas no invocan al modelo y devuelven una lista de exclusiones vacía.
+
 ## Errores
 
 ```json

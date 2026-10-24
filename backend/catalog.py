@@ -3,7 +3,7 @@
 from backend.anatomy import BODY_DETAILS
 from backend.context import matches_parts
 
-CATALOG_VERSION = "1.3.0"
+CATALOG_VERSION = "1.3.1"
 
 SPECIALTIES = [
     {"id": "cardiology", "name": "Cardiología", "criteria": "Heart, palpitations, cardiac symptoms"},

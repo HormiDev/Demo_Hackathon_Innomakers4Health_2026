@@ -1,0 +1,468 @@
+{
+  "notice": "Casos exclusivamente ficticios. Los destinos de revisión son sondas ilustrativas, no etiquetas clínicas validadas.",
+  "base": {
+    "age_months": 420,
+    "gender": "not_specified",
+    "respondent": "self",
+    "reason": "Caso ficticio: molestias sin localizar.",
+    "body_zones": [
+      "unknown"
+    ],
+    "body_details": {},
+    "onset": "gradual",
+    "duration": "weeks",
+    "evolution": "stable",
+    "pain": null,
+    "symptoms": [
+      "unknown"
+    ],
+    "alarms": [
+      "none"
+    ],
+    "answers": {},
+    "history": "Caso ficticio de control técnico.",
+    "reviewed": false
+  },
+  "cases": [
+    {
+      "id": "talon_completo",
+      "patch": {
+        "reason": "Caso ficticio: duele el talón derecho al caminar, más en los primeros pasos; mejora en reposo. Sin golpe ni caída. Primera vez. Puedo realizar mis actividades con molestia leve. No he tomado tratamientos. Sin antecedentes relevantes, hormigueo, heridas ni hinchazón.",
+        "body_zones": [
+          "right_foot"
+        ],
+        "body_details": {
+          "right_foot": [
+            "heel"
+          ]
+        },
+        "symptoms": [
+          "first_steps_pain"
+        ]
+      },
+      "answers": {},
+      "forbidden_questions": [
+        "foot",
+        "heel_pattern",
+        "foot_load"
+      ],
+      "review_destinations": [
+        "podiatry"
+      ]
+    },
+    {
+      "id": "muneca_poco_contexto",
+      "patch": {
+        "reason": "Caso ficticio: molestias en la muñeca izquierda.",
+        "body_zones": [
+          "left_hand"
+        ],
+        "body_details": {
+          "left_hand": [
+            "wrist"
+          ]
+        }
+      },
+      "answers": {
+        "hand_use": "grip",
+        "wrist_load": "bend",
+        "hand_sensation": "no",
+        "joint": "movement",
+        "injury": "no",
+        "activity": "some",
+        "previous": "never",
+        "conditions": [
+          "none"
+        ],
+        "medication": "none"
+      },
+      "forbidden_questions": [
+        "finger_motion",
+        "heel_pattern"
+      ],
+      "review_destinations": [
+        "orthopedics",
+        "rheumatology"
+      ]
+    },
+    {
+      "id": "indice_bloqueo",
+      "patch": {
+        "reason": "Caso ficticio: el índice izquierdo se atasca al flexionarlo.",
+        "body_zones": [
+          "left_hand"
+        ],
+        "body_details": {
+          "left_hand": [
+            "index"
+          ]
+        },
+        "symptoms": [
+          "finger_locking"
+        ]
+      },
+      "answers": {
+        "finger_locking": "morning",
+        "hand_use": "fine",
+        "hand_sensation": "no",
+        "joint": "movement",
+        "injury": "no",
+        "activity": "some"
+      },
+      "forbidden_questions": [
+        "finger_motion",
+        "wrist_load"
+      ],
+      "review_destinations": [
+        "orthopedics"
+      ]
+    },
+    {
+      "id": "ojo_izquierdo",
+      "patch": {
+        "reason": "Caso ficticio: arenilla y lagrimeo en el ojo izquierdo.",
+        "body_zones": [
+          "head"
+        ],
+        "body_details": {
+          "head": [
+            "left_eye"
+          ]
+        },
+        "symptoms": [
+          "eye_grit",
+          "eye_tearing"
+        ]
+      },
+      "answers": {
+        "eye_context": "surface",
+        "injury": "no",
+        "activity": "some"
+      },
+      "forbidden_questions": [
+        "eye_laterality",
+        "ear_context",
+        "jaw_context",
+        "head"
+      ],
+      "review_destinations": [
+        "ophthalmology"
+      ]
+    },
+    {
+      "id": "oido_izquierdo",
+      "patch": {
+        "reason": "Caso ficticio: taponamiento y menor audición en oído izquierdo.",
+        "body_zones": [
+          "head"
+        ],
+        "body_details": {
+          "head": [
+            "left_ear"
+          ]
+        },
+        "symptoms": [
+          "hearing_loss"
+        ]
+      },
+      "answers": {
+        "ear_context": "blocked",
+        "injury": "no",
+        "activity": "some"
+      },
+      "forbidden_questions": [
+        "eye_context",
+        "eye_laterality",
+        "jaw_context"
+      ],
+      "review_destinations": [
+        "ent"
+      ]
+    },
+    {
+      "id": "rodilla",
+      "patch": {
+        "reason": "Caso ficticio: molestia de rodilla derecha al subir escaleras.",
+        "body_zones": [
+          "right_leg"
+        ],
+        "body_details": {
+          "right_leg": [
+            "knee"
+          ]
+        },
+        "symptoms": [
+          "movement_limit"
+        ]
+      },
+      "answers": {
+        "knee_context": "stairs",
+        "joint": "movement",
+        "injury": "no",
+        "activity": "some"
+      },
+      "forbidden_questions": [
+        "hip_motion",
+        "ankle_stability",
+        "hand_use"
+      ],
+      "review_destinations": [
+        "orthopedics",
+        "rheumatology"
+      ]
+    },
+    {
+      "id": "urinario_mujer",
+      "patch": {
+        "gender": "female",
+        "reason": "Caso ficticio: orino más veces, sin molestias genitales ni relación con la regla.",
+        "body_zones": [
+          "pelvis"
+        ],
+        "body_details": {
+          "pelvis": [
+            "center"
+          ]
+        },
+        "symptoms": [
+          "urinary_frequency"
+        ]
+      },
+      "answers": {
+        "pelvic_context": "urine",
+        "digestion": "urine",
+        "menstrual_context": "independent"
+      },
+      "forbidden_questions": [
+        "urinary_detail",
+        "genital_context"
+      ],
+      "review_destinations": [
+        "urology",
+        "primary_care"
+      ]
+    },
+    {
+      "id": "urinario_hombre",
+      "patch": {
+        "gender": "male",
+        "reason": "Caso ficticio: orino más veces, sin molestias genitales.",
+        "body_zones": [
+          "pelvis"
+        ],
+        "body_details": {
+          "pelvis": [
+            "center"
+          ]
+        },
+        "symptoms": [
+          "urinary_frequency"
+        ]
+      },
+      "answers": {
+        "pelvic_context": "urine",
+        "digestion": "urine",
+        "genital_context": "not_applicable"
+      },
+      "forbidden_questions": [
+        "urinary_detail",
+        "menstrual_context"
+      ],
+      "review_destinations": [
+        "urology",
+        "primary_care"
+      ]
+    },
+    {
+      "id": "testicular_genero_mujer",
+      "patch": {
+        "gender": "female",
+        "reason": "Caso ficticio: molestia testicular leve persistente, sin empeoramiento brusco.",
+        "body_zones": [
+          "pelvis"
+        ],
+        "body_details": {
+          "pelvis": [
+            "center"
+          ]
+        },
+        "symptoms": [
+          "testicular_pain"
+        ]
+      },
+      "answers": {
+        "genital_context": "pain",
+        "pelvic_context": "none",
+        "digestion": "none"
+      },
+      "forbidden_questions": [],
+      "review_destinations": [
+        "urology"
+      ]
+    },
+    {
+      "id": "menstrual_genero_hombre",
+      "patch": {
+        "gender": "male",
+        "reason": "Caso ficticio: molestia en abdomen bajo que coincide con la regla.",
+        "body_zones": [
+          "abdomen"
+        ],
+        "body_details": {
+          "abdomen": [
+            "lower_center"
+          ]
+        },
+        "symptoms": [
+          "menstrual_changes"
+        ]
+      },
+      "answers": {
+        "menstrual_context": "during",
+        "digestion": "none",
+        "abdominal_pattern": "cramps"
+      },
+      "forbidden_questions": [],
+      "review_destinations": [
+        "gynecology"
+      ]
+    },
+    {
+      "id": "inespecifico",
+      "patch": {},
+      "answers": {},
+      "forbidden_questions": [],
+      "review_destinations": [
+        "inconclusive",
+        "primary_care"
+      ]
+    },
+    {
+      "id": "pediatrico",
+      "patch": {
+        "age_months": 84,
+        "respondent": "companion",
+        "reason": "Caso ficticio: tos y congestión nasal durante varios días, juega y bebe con normalidad.",
+        "body_zones": [
+          "chest"
+        ],
+        "duration": "days",
+        "pain": 0,
+        "symptoms": [
+          "cough"
+        ]
+      },
+      "answers": {
+        "child_intake": "normal",
+        "child_behavior": "normal",
+        "breathing": "all_day",
+        "activity": "none"
+      },
+      "forbidden_questions": [],
+      "review_destinations": [
+        "pediatrics",
+        "pulmonology"
+      ]
+    },
+    {
+      "id": "lactante",
+      "patch": {
+        "age_months": 4,
+        "respondent": "companion",
+        "reason": "Caso ficticio: menos tomas desde ayer, mantiene pañales y está activo.",
+        "body_zones": [
+          "general"
+        ],
+        "duration": "days",
+        "symptoms": [
+          "infant_feeding"
+        ]
+      },
+      "answers": {
+        "child_intake": "less",
+        "child_behavior": "normal",
+        "infant": "feeding"
+      },
+      "forbidden_questions": [],
+      "review_destinations": [
+        "pediatrics"
+      ]
+    },
+    {
+      "id": "alarma_adulto",
+      "patch": {
+        "body_zones": [
+          "chest"
+        ],
+        "alarms": [
+          "severe_breathing"
+        ]
+      },
+      "answers": {},
+      "forbidden_questions": [],
+      "review_destinations": []
+    },
+    {
+      "id": "alarma_menor",
+      "patch": {
+        "age_months": 4,
+        "respondent": "companion",
+        "body_zones": [
+          "chest"
+        ],
+        "alarms": [
+          "child_breathing"
+        ]
+      },
+      "answers": {},
+      "forbidden_questions": [],
+      "review_destinations": []
+    },
+    {
+      "id": "alarmas_desconocidas",
+      "patch": {
+        "alarms": [
+          "unknown"
+        ]
+      },
+      "answers": {},
+      "forbidden_questions": [],
+      "review_destinations": [
+        "inconclusive",
+        "primary_care"
+      ]
+    },
+    {
+      "id": "dos_zonas",
+      "patch": {
+        "reason": "Caso ficticio: arenilla en ojo izquierdo y molestia de tobillo derecho al andar.",
+        "body_zones": [
+          "head",
+          "right_foot"
+        ],
+        "body_details": {
+          "head": [
+            "left_eye"
+          ],
+          "right_foot": [
+            "ankle"
+          ]
+        },
+        "symptoms": [
+          "eye_grit",
+          "ankle_instability"
+        ]
+      },
+      "answers": {
+        "eye_context": "surface",
+        "ankle_stability": "unstable",
+        "foot_load": "load",
+        "joint": "movement",
+        "injury": "no",
+        "activity": "some"
+      },
+      "forbidden_questions": [],
+      "review_destinations": []
+    }
+  ]
+}

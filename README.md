@@ -18,6 +18,7 @@ Abre **http://localhost:8080** en este equipo o **http://IP_DEL_EQUIPO:8080** de
 ```sh
 make test        # Pruebas de backend y frontend en contenedores aislados
 make test-live   # Dos recorridos ficticios contra el Tev real; requiere make up
+make test-quality # 17 escenarios repetidos y comparación de género con Tev real
 make logs        # Logs del servicio, sin registro de cuerpos clínicos
 make down       # Detener
 make help       # Todos los objetivos
@@ -41,6 +42,7 @@ Si cambias `APP_PORT` en `.env`, utiliza ese puerto al abrir la aplicación. Con
 | Documento | Contenido |
 | --- | --- |
 | [Instalación y configuración](docs/installation.md) | Docker, Makefile, variables, desarrollo local y conectividad |
+| [Calidad de decisiones](docs/quality.md) | Auditoría reproducible, resultados observados y corrección de la entrada de clasificación |
 | [Arquitectura](docs/architecture.md) | Componentes, responsabilidades, flujo de datos y decisiones técnicas |
 | [Contrato de API](docs/api.md) | Rutas, entradas, respuestas y errores |
 | [Formulario adaptativo](docs/adaptive-form.md) | Reglas, edades, mapa, dependencias y finalización |

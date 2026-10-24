@@ -1018,6 +1018,9 @@ export function App() {
                   </Notice>
                   <details className="considered-data">
                     <summary>Datos considerados en esta clasificación</summary>
+                    {result.model_input_exclusions?.includes("gender") && (
+                      <p className="hint">El género adapta el formulario; no se utiliza para puntuar los destinos.</p>
+                    )}
                     <dl className="review-summary">
                       {summary.map(([label, value]) => (
                         <div key={label}>

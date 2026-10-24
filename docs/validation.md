@@ -4,6 +4,10 @@
 
 Verificación realizada el **23 de octubre de 2026** en este equipo Linux, con Docker Compose y Ollama `0.40.10`. Los casos utilizados son ficticios y no aportan validación clínica.
 
+## Calidad de decisiones, 24 de octubre de 2026
+
+La revisión posterior del catálogo `1.3.1` incorpora 105 pruebas de backend y una batería reproducible con 34 recorridos completos y cinco comparaciones de género con Tev real. Se mantienen las 14 pruebas unitarias y 28 recorridos de navegador. Se corrigió la influencia del campo de género en la puntuación de casos clínicamente idénticos, sin alterar los porcentajes devueltos por el modelo. Resultados, variabilidad y límites en [la auditoría de decisiones](quality.md).
+
 ## Revisión del cuestionario, 24 de octubre de 2026
 
 Catálogo `1.3.0`: 48 preguntas y 75 síntomas. Se verifican filtros por puntos del mapa, edad, género con prioridad de síntomas explícitos, datos ya recogidos y respuestas encadenadas. Se conservan los mínimos pediátricos y la posibilidad de que Tev termine sin ninguna pregunta discrecional.

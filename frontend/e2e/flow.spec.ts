@@ -44,6 +44,7 @@ test("formulario, revisión médica, resultados y borrado", async ({ page }, tes
         catalog_version: catalog.version,
         latency_ms: 125,
         considered_data: data,
+        model_input_exclusions: ["gender"],
         label:
           "Puntuaciones del modelo; no son probabilidades clínicas validadas.",
       },
@@ -120,6 +121,9 @@ test("formulario, revisión médica, resultados y borrado", async ({ page }, tes
     expect(fits).toBe(true);
   }
   await expect(page.locator(".ranking-others > summary > strong")).toHaveText("18,00 %");
+  await page.locator(".considered-data > summary").click();
+  await expect(page.getByText("El género adapta el formulario; no se utiliza para puntuar los destinos.")).toBeVisible();
+  await page.locator(".considered-data > summary").click();
   await page.emulateMedia({ media: "print" });
   await expect(page.locator(".ranking-print li:visible")).toHaveCount(23);
   await expect(page.locator(".rankings-screen")).not.toBeVisible();

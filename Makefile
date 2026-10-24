@@ -3,7 +3,7 @@ COMPOSE := docker compose
 -include .env
 APP_PORT ?= 8080
 
-.PHONY: all build up down restart logs test test-live clean fclean re help
+.PHONY: all build up down restart logs test test-live test-quality clean fclean re help
 
 all: up
 
@@ -31,6 +31,9 @@ test:
 test-live:
 	$(COMPOSE) exec -T app python scripts/live_check.py
 
+test-quality:
+	$(COMPOSE) exec -T app python scripts/quality_check.py --repeat 2
+
 clean:
 	$(COMPOSE) down --remove-orphans
 
@@ -44,4 +47,4 @@ re:
 	$(MAKE) all
 
 help:
-	@printf '%s\n' 'all/up    Compila e inicia la aplicación' 'build     Compila la imagen' 'down      Detiene los servicios' 'restart   Reinicia la aplicación' 'logs      Muestra logs sin contenido clínico' 'test      Ejecuta las pruebas aisladas' 'test-live Comprueba Tev con casos ficticios' 'clean     Elimina contenedores del proyecto' 'fclean    Elimina también sus tres imágenes' 're        Reconstruye el proyecto' 'help      Muestra esta ayuda'
+	@printf '%s\n' 'all/up    Compila e inicia la aplicación' 'build     Compila la imagen' 'down      Detiene los servicios' 'restart   Reinicia la aplicación' 'logs      Muestra logs sin contenido clínico' 'test      Ejecuta las pruebas aisladas' 'test-live Comprueba Tev con casos ficticios' 'test-quality Audita decisiones y resultados con Tev real' 'clean     Elimina contenedores del proyecto' 'fclean    Elimina también sus tres imágenes' 're        Reconstruye el proyecto' 'help      Muestra esta ayuda'

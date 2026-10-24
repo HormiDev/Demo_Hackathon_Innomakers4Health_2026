@@ -88,5 +88,6 @@ export type Result = {
   catalog_version: string;
   latency_ms: number;
   considered_data: CaseData;
+  model_input_exclusions?: string[];
   label: string;
 };
