@@ -120,7 +120,7 @@ test("muestra preguntas encadenadas de la mano y explica la finalización", asyn
   await page.getByLabel("Sobre todo al despertar", { exact: true }).check();
   await page.getByRole("button", { name: "Guardar y continuar", exact: true }).click();
   const note = page.getByRole("region", { name: "Revisión de preguntas a medida" });
-  await expect(note).toContainText("Tev ha valorado 1 pregunta relacionada y no propone más");
+  await expect(note).toContainText("Tev no propone más preguntas.");
   await note.locator("summary").click();
   await expect(note).toContainText("¿Qué gesto hace que notes más la molestia de la mano?");
   await expect(page.locator(".review-summary")).toContainText("Sobre todo al despertar");

@@ -8,10 +8,7 @@ import {
   ChevronRight,
   ClipboardCheck,
   FileText,
-  HeartPulse,
-  Leaf,
   LoaderCircle,
-  LockKeyhole,
   Plus,
   Printer,
   RefreshCw,
@@ -56,14 +53,7 @@ const STEP_TITLES = [
   "Una visión completa del caso",
   "El siguiente paso, con criterio",
 ];
-const STEP_TEXT = [
-  "Cada persona es diferente. Estos datos nos ayudan a adaptar las preguntas a ti.",
-  "Selecciona una zona y precisa la localización en la vista ampliada.",
-  "Los síntomas sugeridos se adaptan a los datos del paciente y a la zona de la molestia.",
-  "Las siguientes preguntas se eligen según la información que has compartido.",
-  "Revisa la información y añade el contexto clínico antes de consultar al modelo.",
-  "Una orientación para acompañar la decisión del profesional médico.",
-];
+
 
 // Coordina un caso en memoria, sus revisiones y las peticiones cancelables a la API local.
 export function App() {
@@ -359,55 +349,24 @@ export function App() {
               deriva<span className="brand-dot">.</span>
             </span>
           </a>
-          <div className="brand-caption">
-            Cada paciente,
-            <br />
-            <strong>su especialista.</strong>
-          </div>
+          <span className="brand-caption">Cada paciente, su especialista.</span>
           <div className="topbar-right">
-            <span className="demo-tag">DEMO · INNOMAKERS4HEALTH</span>
-            <span className="local-badge">
-              <LockKeyhole size={13} /> Entorno local
-            </span>
+            <span className="demo-tag">DEMO EN DIRECTO</span>
+            <div className="model-status" role="status" aria-label="Estado del modelo">
+              <span className={`status-dot ${health?.status === "ready" ? "online" : ""}`} />
+              <div>
+                <strong>{health?.model || "Tev"}</strong>
+                <span>{health?.status === "ready" ? "Conectado · Local" : health ? "Sin conexión" : "Conectando…"}</span>
+              </div>
+              <button className="icon-button" aria-label="Comprobar conexión con el modelo" onClick={refreshHealth}>
+                <RefreshCw size={17} />
+              </button>
+            </div>
           </div>
         </div>
       </header>
 
       <div className="page-shell">
-        <div className="page-heading">
-          <div>
-            <div className="eyebrow">
-              <span />
-              {mode === "doctor"
-                ? "ESPACIO DEL PROFESIONAL"
-                : "ORIENTACIÓN CLÍNICA ASISTIDA"}
-            </div>
-            <h1>
-              Un camino más claro hacia
-              <br />
-              la atención adecuada<span>.</span>
-            </h1>
-            <p>Escuchar, comprender y orientar. Paso a paso.</p>
-          </div>
-          <div className="heading-illustration" aria-hidden="true">
-            <div className="orbit orbit-one" />
-            <div className="orbit orbit-two" />
-            <div className="hero-medical">
-              {mode === "doctor" ? (
-                <Stethoscope size={53} strokeWidth={1.3} />
-              ) : (
-                <HeartPulse size={53} strokeWidth={1.3} />
-              )}
-            </div>
-            <span className="hero-plus">+</span>
-            {mode === "doctor" ? (
-              <ClipboardCheck className="hero-leaf" size={25} />
-            ) : (
-              <Leaf className="hero-leaf" size={25} />
-            )}
-          </div>
-        </div>
-
         <div className="workspace-bar">
           <div className="consultation-label" role="status" aria-atomic="true">
             <span className="small-icon">
@@ -477,43 +436,12 @@ export function App() {
                     </span>
                     <span>
                       {label}
-                      {index === step && <small>Estás aquí</small>}
                     </span>
                     {index === step && <ChevronRight size={15} />}
                   </button>
                 </li>
               ))}
             </ol>
-            <div className="sidebar-context">
-              <span className="context-icon">
-                <ShieldCheck size={20} />
-              </span>
-              <strong>Tu información se queda aquí</strong>
-              <p>
-                El análisis se realiza en este equipo. El caso no se guarda al
-                cerrar o recargar la página.
-              </p>
-            </div>
-            <div className="model-status">
-              <span
-                className={`status-dot ${health?.status === "ready" ? "online" : ""}`}
-              />
-              <div>
-                <strong>
-                  {health?.status === "ready"
-                    ? "Modelo conectado"
-                    : "Comprobar modelo"}
-                </strong>
-                <span>{health?.model || "Conectando…"}</span>
-              </div>
-              <button
-                className="icon-button"
-                aria-label="Comprobar conexión con el modelo"
-                onClick={refreshHealth}
-              >
-                <RefreshCw size={14} />
-              </button>
-            </div>
             <button className="reset-button" onClick={() => setResetOpen(true)}>
               <RefreshCw size={14} />
               Empezar un caso nuevo
@@ -526,10 +454,9 @@ export function App() {
                 PASO {String(step + 1).padStart(2, "0")}{" "}
                 <span>/ {STEPS[step]}</span>
               </div>
-              <h2 tabIndex={-1} ref={heading}>
+              <h1 tabIndex={-1} ref={heading}>
                 {STEP_TITLES[step]}
-              </h2>
-              <p>{STEP_TEXT[step]}</p>
+              </h1>
             </div>
             <div className="card-content">
               {error && (
@@ -559,21 +486,6 @@ export function App() {
 
               {catalog && step === 0 && (
                 <div className="form-stack patient-form">
-                  <div className="welcome-note">
-                    <span className="welcome-icon">
-                      <UserRound size={23} />
-                    </span>
-                    <div>
-                      <strong>Vamos a orientarte mejor</strong>
-                      <p>
-                        No necesitas conocer términos médicos. Responde con lo
-                        que sabes.
-                      </p>
-                    </div>
-                    <span className="welcome-sparkle">
-                      <Sparkles size={20} />
-                    </span>
-                  </div>
                   <div className="two-columns patient-details">
                     <div>
                       <label className="field-label" htmlFor="age">
@@ -617,13 +529,12 @@ export function App() {
                         </select>
                       </div>
                       <p className="hint">
-                        Para bebés, puedes indicar la edad en meses.
+                        Bebés: usa meses.
                       </p>
                     </div>
                     <div>
                       <label className="field-label" htmlFor="gender">
-                        Género del paciente{" "}
-                        <span className="optional">Opcional</span>
+                        Género del paciente
                       </label>
                       <select
                         id="gender"
@@ -659,9 +570,6 @@ export function App() {
                       ¿Qué te trae a consulta?{" "}
                       <span className="required">*</span>
                     </label>
-                    <p className="hint">
-                      Describe la molestia principal o lo que te preocupa.
-                    </p>
                     <textarea
                       id="reason"
                       rows={3}
@@ -673,22 +581,16 @@ export function App() {
                       }
                     />
                     <div className="input-bottom">
-                      <span>Con tus palabras es suficiente.</span>
+                      <span>Sin datos identificativos.</span>
                       <span>{data.reason.length}/600</span>
                     </div>
                   </div>
                   {age !== "" && pediatric && (
                     <Notice>
-                      Adaptaremos las preguntas a la edad del menor. El
-                      acompañante puede responder observando cómo se encuentra.
+                      El acompañante puede responder por el menor.
                     </Notice>
                   )}
-                  <div className="quiet-line">
-                    <ShieldCheck size={15} />
-                    <span>
-                      No necesitamos nombre, DNI ni otros datos identificativos.
-                    </span>
-                  </div>
+
                 </div>
               )}
 
@@ -780,9 +682,6 @@ export function App() {
                             ` · ${moreSelected} ${moreSelected === 1 ? "seleccionado" : "seleccionados"}`}
                         </summary>
                         <div className="more-symptoms-content">
-                          <p className="hint">
-                            Puedes indicar otros síntomas aunque no estén entre los sugeridos.
-                          </p>
                           {symptoms.related.length > 0 && (
                             <Choices
                               label="Más síntomas de la zona"
@@ -809,9 +708,7 @@ export function App() {
                       </details>
                     )}
                     <p className="hint">
-                      Esta comprobación cubre solo algunas señales. Si hay
-                      preocupación por el estado del paciente, solicita valoración
-                      médica.
+                      Si el estado del paciente preocupa, solicita valoración médica.
                     </p>
                   </div>
                   <div className="alarm-section">
@@ -819,9 +716,6 @@ export function App() {
                       <ShieldCheck size={20} />
                       <div>
                         <h3>Antes de continuar</h3>
-                        <p>
-                          Indica si hay alguna de estas señales en este momento.
-                        </p>
                       </div>
                     </div>
                     <Choices
@@ -867,9 +761,7 @@ export function App() {
                       </div>
                       <h3>Buscando la siguiente pregunta</h3>
                       <p>
-                        El modelo está teniendo en cuenta tus respuestas.
-                        <br />
-                        Puedes tardar un poco más en la primera consulta.
+                        Tev está valorando tus respuestas.
                       </p>
                       <LoaderCircle className="spin" size={21} />
                     </div>
@@ -912,29 +804,7 @@ export function App() {
               )}
 
               {catalog && step === 4 && (
-                <div className="form-stack">
-                  {next?.status === "complete" && (
-                    <section className="adaptive-review-note" aria-label="Revisión de preguntas a medida">
-                      <Notice>
-                        {next.completion_reason === "model_enough"
-                          ? `Tev ha valorado ${next.candidates_considered || 0} ${next.candidates_considered === 1 ? "pregunta relacionada" : "preguntas relacionadas"} y no propone más por ahora.`
-                          : next.completion_reason === "no_candidates"
-                            ? "No quedan preguntas nuevas que correspondan a las respuestas actuales."
-                            : "No se proponen más preguntas por ahora."}
-                        {Object.keys(data.answers).length === 0
-                          ? " No se ha añadido ninguna pregunta adicional; puedes continuar con la revisión médica."
-                          : " Las respuestas recogidas se incluyen en el resumen para el médico."}
-                      </Notice>
-                      {!!next.considered_questions?.length && (
-                        <details className="adaptive-considered">
-                          <summary>Ver preguntas valoradas ({next.considered_questions.length})</summary>
-                          <ul>
-                            {next.considered_questions.map((question) => <li key={question.id}>{question.label}</li>)}
-                          </ul>
-                        </details>
-                      )}
-                    </section>
-                  )}
+                <div className="form-stack review-form">
                   {next?.warnings.map((warning) => (
                     <Notice danger={urgent} key={warning}>
                       {warning}
@@ -960,8 +830,7 @@ export function App() {
                       <div>
                         <strong>Ahora continúa el médico</strong>
                         <p>
-                          El médico puede comprobar tus respuestas y añadir el
-                          historial en este mismo equipo.
+                          Revisión de respuestas y contexto clínico.
                         </p>
                       </div>
                       <button
@@ -973,12 +842,10 @@ export function App() {
                       </button>
                     </div>
                   )}
+                  <section className="review-details">
                   <div className="section-heading spaced">
                     <div>
                       <h3>Resumen de la consulta</h3>
-                      <p>
-                        Comprueba los datos antes de obtener una orientación.
-                      </p>
                     </div>
                     <button className="text-button" onClick={() => setStep(0)}>
                       Editar respuestas
@@ -986,13 +853,15 @@ export function App() {
                     </button>
                   </div>
                   <dl className="review-summary">
-                    {summary.map(([label, value]) => (
+                    {summary.filter(([label]) => label !== "Motivo de consulta").map(([label, value]) => (
                       <div key={label}>
-                        <dt>{label}</dt>
+                        <dt>{label === "Señales de alarma declaradas" ? "Señales de alarma" : label}</dt>
                         <dd>{value}</dd>
                       </div>
                     ))}
                   </dl>
+                  </section>
+                  <div className="review-editor">
                   <div>
                     <label className="field-label" htmlFor="review-reason">
                       Motivo y detalles adicionales
@@ -1007,21 +876,9 @@ export function App() {
                       }
                     />
                   </div>
-                  <section className="history-section">
-                    <div className="section-heading">
-                      <span className="small-icon">
-                        <FileText size={21} />
-                      </span>
-                      <div>
-                        <h3>
-                          Historial clínico{" "}
-                          <span className="optional">Opcional</span>
-                        </h3>
-                        <p>
-                          Añade antecedentes, medicación y contexto relevante.
-                        </p>
-                      </div>
-                    </div>
+                  <details className="history-disclosure">
+                    <summary>Historial clínico <span className="optional">Opcional</span></summary>
+                    <section className="history-section">
                     <input
                       ref={fileInput}
                       className="visually-hidden"
@@ -1057,9 +914,7 @@ export function App() {
                       }}
                     />
                     <div className="input-bottom">
-                      <span>
-                        Utiliza un resumen breve y relevante para este caso.
-                      </span>
+                      <span>Resumen breve del caso.</span>
                       <span>{data.history.length} caracteres</span>
                     </div>
                     {historyNotice && (
@@ -1069,32 +924,37 @@ export function App() {
                       </p>
                     )}
                   </section>
-                  <Notice>
-                    Las puntuaciones de Tev orientan la derivación y no
-                    representan probabilidades clínicas validadas ni un
-                    diagnóstico. El médico toma la decisión final.
-                  </Notice>
-                  {mode === "doctor" && (
-                    <label className="review-confirmation">
-                      <input
-                        type="checkbox"
-                        checked={data.reviewed}
-                        onChange={(event) => {
-                          cancelPending();
-                          setData({ ...data, reviewed: event.target.checked });
-                        }}
-                      />
-                      <span>
-                        He revisado las respuestas, las señales de alarma y el
-                        contexto clínico del caso.
-                      </span>
-                    </label>
+                  </details>
+                  {next?.status === "complete" && (
+                    <section className="adaptive-review-note" aria-label="Revisión de preguntas a medida">
+                      <Notice>
+                        {next.completion_reason === "model_enough"
+                          ? "Tev no propone más preguntas."
+                          : next.completion_reason === "no_candidates"
+                            ? "No quedan preguntas aplicables."
+                            : "No se proponen más preguntas por ahora."}
+                        {Object.keys(data.answers).length === 0
+                          ? " No se ha añadido ninguna pregunta adicional."
+                          : ""}
+                      </Notice>
+                      {!!next.considered_questions?.length && (
+                        <details className="adaptive-considered">
+                          <summary>Ver preguntas valoradas ({next.considered_questions.length})</summary>
+                          <ul>
+                            {next.considered_questions.map((question) => <li key={question.id}>{question.label}</li>)}
+                          </ul>
+                        </details>
+                      )}
+                    </section>
                   )}
+
+                  </div>
+
                 </div>
               )}
 
               {catalog && step === 5 && result && (
-                <div className="form-stack">
+                <div className="form-stack results-form">
                   {result.warnings.map((warning) => (
                     <Notice
                       key={warning}
@@ -1139,18 +999,17 @@ export function App() {
                           <small>%</small>
                         </strong>
                       </div>
+                      <section className="result-ranking">
                       <div className="section-heading">
                         <div>
                           <h3>Orientación por especialidad</h3>
-                          <p>
-                            Las cinco primeras opciones · El resto, en «Otros»
-                          </p>
                         </div>
                         <span className="catalog-tag">
                           {result.rankings.length} destinos
                         </span>
                       </div>
                       <Rankings rankings={result.rankings} />
+                      </section>
                     </>
                   )}
                   <Notice>
@@ -1171,7 +1030,6 @@ export function App() {
                     <p className="history-text">
                       {data.history || "No aportado"}
                     </p>
-                  </details>
                   <div className="result-meta">
                     <span>
                       <Activity size={14} />
@@ -1180,6 +1038,7 @@ export function App() {
                     <span>Catálogo {result.catalog_version}</span>
                     <span>{(result.latency_ms / 1000).toFixed(2)} s</span>
                   </div>
+                  </details>
                   <div className="report-actions">
                     <button className="button secondary" onClick={exportCase}>
                       <ArrowDownToLine size={16} />
@@ -1213,6 +1072,22 @@ export function App() {
             {catalog && (
               <div className="card-footer">
                 <div>
+                  {step === 4 && mode === "doctor" && (
+                    <label className="review-confirmation">
+                      <input
+                        type="checkbox"
+                        checked={data.reviewed}
+                        onChange={(event) => {
+                          cancelPending();
+                          setData({ ...data, reviewed: event.target.checked });
+                        }}
+                      />
+                      <span>
+                        He revisado las respuestas, las señales de alarma y el
+                        contexto clínico del caso.
+                      </span>
+                    </label>
+                  )}
                   {step > 0 && (
                     <button
                       className="button subtle"
@@ -1280,35 +1155,10 @@ export function App() {
             )}
           </main>
         </div>
-        <div className="mobile-tools">
-          <button className="text-button" onClick={refreshHealth}>
-            <RefreshCw size={13} />
-            {health?.status === "ready" ? "Tev conectado" : "Comprobar Tev"}
-          </button>
-          <button className="text-button" onClick={() => setResetOpen(true)}>
-            <RefreshCw size={13} />
-            Borrar caso
-          </button>
-        </div>
-        <div className="below-workspace">
-          <span>
-            <LockKeyhole size={13} />
-            Procesamiento local
-          </span>
-          <span>
-            <Stethoscope size={14} />
-            Decisión final del médico
-          </span>
-          <span>
-            <HeartPulse size={14} />
-            Diseñado para acompañar
-          </span>
-        </div>
         <footer className="page-footer">
-          <span>
-            deriva. <small>Tecnología al servicio del cuidado.</small>
-          </span>
-          <span>Demo de hackathon · Sin validación clínica</span>
+          <span>El caso se borra al recargar.</span>
+          <span>Demo sin validación clínica · Decisión médica</span>
+          {step !== 5 && <button className="text-button mobile-reset" onClick={() => setResetOpen(true)}>Nuevo caso</button>}
         </footer>
       </div>
       {resetOpen && (

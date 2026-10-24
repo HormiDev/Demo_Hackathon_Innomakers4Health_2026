@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 // Recorre la interfaz con respuestas HTTP de prueba, manteniendo real el catálogo.
-test("formulario, revisión médica, resultados y borrado", async ({ page }) => {
+test("formulario, revisión médica, resultados y borrado", async ({ page }, testInfo) => {
   const issues: string[] = [];
   page.on("pageerror", (error) => issues.push(error.message));
   await page.route("**/api/next-question", async (route) => {
@@ -94,6 +94,7 @@ test("formulario, revisión médica, resultados y borrado", async ({ page }) => 
     page.getByRole("heading", { name: "Una visión completa del caso" }),
   ).toBeVisible();
   await expect(page.locator(".review-summary")).toContainText("No binario");
+  await page.locator(".history-disclosure > summary").click();
   await page
     .getByLabel("O pega y edita el historial aquí")
     .fill("Antecedentes ficticios. Sin alergias conocidas.");
@@ -114,6 +115,10 @@ test("formulario, revisión médica, resultados y borrado", async ({ page }) => 
   await expect(page.getByRole("heading", { name: "Podología" })).toBeVisible();
   await expect(page.locator(".ranking-row")).toHaveCount(23);
   await expect(page.locator(".ranking-row:visible")).toHaveCount(5);
+  if (testInfo.project.name === "desktop") {
+    const fits = await page.locator(".card-content").evaluate((element) => element.scrollHeight <= element.clientHeight + 1);
+    expect(fits).toBe(true);
+  }
   await expect(page.locator(".ranking-others > summary > strong")).toHaveText("18,00 %");
   await page.emulateMedia({ media: "print" });
   await expect(page.locator(".ranking-print li:visible")).toHaveCount(23);
@@ -143,7 +148,7 @@ test("señales de alarma visibles y recarga sin datos", async ({ page }) => {
     .getByLabel("¿Qué te trae a consulta?")
     .fill("Caso ficticio de consulta pediátrica");
   await expect(
-    page.getByText("Adaptaremos las preguntas a la edad del menor."),
+    page.getByText("El acompañante puede responder por el menor."),
   ).toBeVisible();
   await page.getByRole("button", { name: "Continuar", exact: true }).click();
   await page.getByRole("button", { name: "Pecho", exact: true }).click();
@@ -219,6 +224,9 @@ for (const viewport of [
     }
 
     await expectNoScroll();
+    for (const selector of [".model-status strong", ".consultation-label div > span", ".field-label"]) {
+      expect(await page.locator(selector).first().evaluate((element) => parseFloat(getComputedStyle(element).fontSize))).toBeGreaterThanOrEqual(14);
+    }
     await page.getByRole("button", { name: "Continuar", exact: true }).click();
     await page.getByRole("button", { name: "Pecho", exact: true }).click();
     await page.getByLabel("De repente", { exact: true }).check();

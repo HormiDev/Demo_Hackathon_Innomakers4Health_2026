@@ -15,7 +15,15 @@ El formulario utiliza lenguaje sencillo en ambos modos; la vista médica añade 
 
 ## Lenguaje visual de los roles
 
-El modo paciente utiliza verdes suaves y el indicador «Consulta del paciente». El modo médico cambia a azul pizarra y muestra «Revisión clínica» y «Espacio del profesional». El cambio afecta al fondo, la cabecera, el progreso, los botones, el historial y la confirmación; el rol también se comunica con texto e iconos. La tarjeta de relevo conecta ambos roles y destaca la acción «Continuar como médico». Una transición breve acompaña el cambio y se desactiva si se solicita movimiento reducido. Al volver al modo paciente se recupera la paleta original.
+El modo paciente utiliza verdes suaves y el indicador «Consulta del paciente». El modo médico cambia a azul pizarra y muestra «Revisión clínica». El cambio afecta al fondo, la cabecera, el progreso, los botones, el historial y la confirmación; el rol también se comunica con texto e iconos. La tarjeta de relevo conecta ambos roles y destaca la acción «Continuar como médico». Una transición breve acompaña el cambio y se desactiva si se solicita movimiento reducido. Al volver al modo paciente se recupera la paleta original.
+
+## Presentación en directo
+
+La cabecera mantiene el nombre del modelo, su conexión y el botón para comprobarla, también en móvil. Se han retirado el bloque de bienvenida, la cabecera promocional y explicaciones repetidas. Los textos de rol, preguntas, opciones y resultados tienen mayor tamaño; se mantienen las señales de alarma y los límites de interpretación.
+
+En escritorio se aprovecha la altura disponible, con navegación visible y desplazamiento interno cuando lo requiere el contenido. Los primeros formularios se comprueban sin desplazamiento a 1280×720, 1366×768 y 1920×1080. Revisión y resultados utilizan dos columnas; el historial opcional y los datos técnicos de la clasificación se despliegan a petición. La confirmación médica aparece junto a la acción de obtener orientación. Los casos extensos y los detalles expandidos pueden necesitar desplazamiento.
+
+En móvil el contenido vuelve a una columna, salvo edad/género y las ilustraciones que pueden mostrarse juntas. El modelo y el rol permanecen visibles, los campos de entrada usan 16 px y no se impide el desplazamiento natural del formulario.
 
 ## Mapa corporal y dolor
 

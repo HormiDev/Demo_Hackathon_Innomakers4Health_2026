@@ -118,7 +118,7 @@ input[type="checkbox"] {
   height: 17px;
   flex-shrink: 0;
 }
-h2:focus {
+h1:focus {
   outline: none;
 }
 .skip-link {
@@ -558,7 +558,7 @@ h2:focus {
   font-weight: 400;
   padding-left: 7px;
 }
-.card-header h2 {
+.card-header h1 {
   font-size: 23px;
   letter-spacing: -0.6px;
   font-weight: 550;
@@ -1642,7 +1642,7 @@ legend {
     padding-left: 25px;
     padding-right: 25px;
   }
-  .card-header h2 {
+  .card-header h1 {
     font-size: 21px;
   }
   .two-columns {
@@ -1839,7 +1839,7 @@ legend {
   .hint {
     font-size: 11px;
   }
-  .card-header h2 {
+  .card-header h1 {
     font-size: 22px;
   }
   .form-stack {
@@ -1951,7 +1951,7 @@ legend {
   .card-header {
     padding: 23px 18px 19px;
   }
-  .card-header h2 {
+  .card-header h1 {
     font-size: 21px;
   }
   .card-header p {
@@ -2357,7 +2357,7 @@ legend {
   .step-eyebrow {
     margin-bottom: 4px;
   }
-  .card-header h2 {
+  .card-header h1 {
     margin-bottom: 3px;
     font-size: 22px;
   }
@@ -2829,7 +2829,7 @@ legend {
 :root[data-mode="doctor"] .card-footer {
   background: #f7f9fc;
 }
-:root[data-mode="doctor"] .card-header h2,
+:root[data-mode="doctor"] .card-header h1,
 :root[data-mode="doctor"] .section-heading h3,
 :root[data-mode="doctor"] .field-label,
 :root[data-mode="doctor"] legend {
@@ -2991,6 +2991,178 @@ legend {
     transition: none !important;
   }
 }
+/* Lectura de la demo: menos bloques auxiliares y controles más legibles. */
+@media screen {
+  .topbar-inner { min-height: 64px; }
+  .brand-caption { font-size: 14px; line-height: 1.4; }
+  .demo-tag { font-size: 11px; letter-spacing: 1px; }
+  .topbar .model-status { display: flex; padding: 0 0 0 22px; border-left: 1px solid var(--border); gap: 12px; }
+  .model-status strong { font-size: 18px; font-weight: 650; color: var(--dark); }
+  .model-status div > span { font: inherit; font-size: 12px; color: var(--muted); margin-top: 0; }
+  .status-dot { width: 8px; height: 8px; }
+  .icon-button { min-width: 36px; min-height: 36px; }
+  .consultation-label strong { font-size: 17px; }
+  .consultation-label div > span { font-size: 14px; color: var(--muted); }
+  .mode-switch button { font-size: 14px; min-height: 38px; }
+  .step-list button { font-size: 14px; }
+  .step-number { font-size: 12px; }
+  .step-count, .sidebar .eyebrow { font-size: 11px; }
+  .reset-button { font-size: 13px; padding-top: 16px; }
+  .card-header h1 { font-size: 26px; }
+  .step-eyebrow { font-size: 11px; }
+  .card-header p, .hint { font-size: 13px; }
+  .field-label, legend { font-size: 15px; }
+  .choice, .button, .gender-select, .age-input input, .age-input select { font-size: 14px; }
+  .choice { min-height: 40px; padding: 8px 11px; line-height: 1.45; }
+  .button { min-height: 42px; }
+  textarea { font-size: 15px; line-height: 1.5; }
+  .optional, .input-bottom { font-size: 11px; }
+  .notice, .review-confirmation { font-size: 13px; line-height: 1.5; }
+  .section-heading h3, .adaptive-banner strong, .doctor-handoff strong { font-size: 16px; }
+  .section-heading p, .doctor-handoff p, .adaptive-banner p { font-size: 13px; }
+  .text-button, .more-symptoms summary, .adaptive-considered { font-size: 13px; }
+  .review-details, .review-editor, .review-actions, .result-ranking { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .review-summary > div { font-size: 13px; padding: 7px 12px; gap: 12px; }
+  .review-summary dt { color: var(--muted); }
+  .review-summary dd { color: var(--ink); }
+  .history-section { padding-top: 12px; gap: 10px; }
+  .history-section .field-label { font-size: 14px; }
+  .upload-area { padding: 10px 12px; flex-direction: row; flex-wrap: wrap; gap: 8px; text-align: left; }
+  .upload-area strong { font-size: 13px; }
+  .upload-area > span:last-child { font-size: 11px; }
+  .upload-icon { width: 28px; height: 28px; }
+  .review-editor textarea { min-height: 72px; padding: 10px 12px; }
+  .review-editor #history { height: 104px; }
+  .history-disclosure { border: 1px solid var(--border); border-radius: 8px; background: var(--pale); padding: 12px; }
+  .history-disclosure > summary { font-size: 15px; font-weight: 600; color: var(--dark); cursor: pointer; }
+  .history-disclosure > summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; }
+  .history-disclosure .history-section { border: 0; background: transparent; padding: 12px 0 0; }
+  .doctor-handoff { padding: 12px 14px; }
+  .doctor-handoff .button { font-size: 13px; }
+  .ranking-content > div:first-child { font-size: 15px; }
+  .ranking-content strong, .ranking-others > summary > strong { font-size: 16px; }
+  .ranking-number, .ranking-others-title { font-size: 14px; }
+  .ranking-expand-label { font-size: 12px; }
+  .considered-data summary { font-size: 13px; }
+  .result-feature h3 { font-size: 23px; }
+  .result-feature p { font-size: 13px; }
+  .result-meta { font-size: 12px; }
+  .page-footer { font-size: 11px; padding: 10px 0; gap: 12px; }
+  .page-footer > span:first-child { font-size: 11px; font-weight: 400; letter-spacing: 0; color: inherit; }
+  .mobile-reset { display: none; }
+  .body-options .field-label { font-size: 14px; }
+  .body-options .hint, .rotate-button { font-size: 12px; }
+  .body-detail-heading select { font-size: 14px; min-height: 36px; height: auto; }
+  .detail-options button, .detail-view-button { font-size: 12px; min-height: 28px; }
+  .body-detail-footer { font-size: 11px; }
+  .body-detail-status { white-space: normal; }
+}
+@media screen and (min-width: 1100px) and (min-height: 650px) {
+  .page-shell { grid-template-rows: auto minmax(0, 1fr) auto; padding-top: 12px; }
+  .workspace { grid-template-columns: 225px minmax(0, 1fr); }
+  .workspace-bar { padding: 10px 22px; }
+  .sidebar { padding: 20px 16px; }
+  .sidebar-top { margin-bottom: 18px; }
+  .step-list li { padding-bottom: 14px; }
+  .step-list li:not(:last-child)::after { height: 23px; }
+  .card-header { padding: 10px 24px; }
+  .card-content { padding: 12px 24px; }
+  .card-footer { padding: 10px 24px; }
+  .form-stack { gap: 16px; }
+  .patient-details { gap: 18px 14px; }
+  .patient-form .reason-field textarea { min-height: 148px; }
+  .patient-form .notice { grid-column: 1 / -1; }
+  .zone-option { font-size: 12px; min-height: 31px; padding: 5px 6px; }
+  .body-canvas > svg { height: clamp(180px, calc(100dvh - 565px), 300px); }
+  .discomfort-form { grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr); gap: 20px; }
+  .discomfort-details .choice, .symptoms-fields .choice { font-size: 13px; min-height: 35px; padding: 6px 8px; }
+  .discomfort-details { gap: 12px; }
+  .discomfort-details .choices { gap: 6px; }
+  .pain-field .hint { font-size: 12px; }
+  .pain-field { padding-bottom: 10px; }
+  .pain-scale > button { font-size: 14px; min-height: 35px; }
+  .symptoms-form { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 20px; }
+  .symptoms-fields .choices { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+  .symptoms-fields .hint { font-size: 12px; }
+  .alarm-section { padding: 10px; }
+  .alarm-section > .section-heading { margin-bottom: 8px; }
+  .alarm-section legend { font-size: 13px; margin-bottom: 8px; }
+  .alarm-section .choices { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .alarm-section .choice { font-size: 13px; min-height: 31px; padding: 5px 9px; line-height: 1.35; }
+  .body-detail-stage { grid-template-columns: minmax(0, 1fr) 112px; }
+  .detail-options { max-height: 232px; height: auto; gap: 2px; }
+  .detail-options button { min-height: 26px; padding: 3px 6px; }
+  .body-detail-svg { height: clamp(165px, calc(100dvh - 565px), 250px); }
+  .review-form { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; gap: 12px 24px; }
+  .review-form > .doctor-handoff, .review-form > .notice, .review-actions { grid-column: 1 / -1; }
+  .card-footer:has(.review-confirmation) { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; }
+  .card-footer > div:has(.review-confirmation) { display: contents; }
+  .card-footer .review-confirmation { grid-column: 2; grid-row: 1; padding: 8px 12px; font-size: 12px; }
+  .card-footer:has(.review-confirmation) > .button { grid-column: 3; }
+  .card-footer:has(.review-confirmation) .button.subtle { grid-column: 1; grid-row: 1; }
+  .review-actions .notice, .review-confirmation { padding: 10px 12px; }
+  .review-editor { gap: 12px; }
+  .review-summary > div { padding-top: 4px; padding-bottom: 4px; }
+  .results-form { display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); gap: 12px 28px; align-items: start; }
+  .results-form > * { grid-column: 1; }
+  .results-form > .result-ranking { grid-column: 2; grid-row: 1 / span 6; gap: 12px; }
+  .result-feature { padding: 16px; flex-wrap: wrap; }
+  .result-feature > strong { font-size: 32px; margin-left: auto; }
+  .ranking-list { gap: 10px; }
+  .page-footer { padding: 8px 0 0; }
+}
+@media screen and (max-width: 1099px) {
+  .page-shell { padding-top: 14px; }
+  .card-header { padding-top: 18px; padding-bottom: 14px; }
+  .card-content { padding-top: 18px; padding-bottom: 18px; min-height: 0; }
+  .form-stack { gap: 18px; }
+  .zone-option { font-size: 13px; }
+}
+@media screen and (max-width: 760px) {
+  .topbar-inner { min-height: 64px; padding: 0 16px; }
+  .brand { font-size: 28px; }
+  .topbar .model-status { padding-left: 12px; gap: 9px; }
+  .model-status strong { font-size: 16px; }
+  .model-status div > span { font-size: 11px; }
+  .topbar .model-status .icon-button { min-width: 30px; }
+  .brand-caption, .demo-tag { display: none; }
+  .workspace-bar { flex-wrap: nowrap; padding: 12px 14px; gap: 8px; }
+  .consultation-label { min-width: 0; }
+  .consultation-label .small-icon { display: none; }
+  .consultation-label strong { font-size: 14px; }
+  .consultation-label div > span { font-size: 14px; }
+  .mode-switch { margin-left: auto; }
+  .mode-switch button { font-size: 13px; padding: 6px 9px; }
+  .step-list .current button > span + span { display: none; }
+  .step-number { width: 30px; height: 30px; font-size: 12px; }
+  .sidebar { padding: 12px 16px; }
+  .card-header h1 { font-size: 23px; }
+  .step-eyebrow, .card-header p { font-size: 12px; }
+  .card-content, .card-header, .card-footer { padding-left: 16px; padding-right: 16px; }
+  .two-columns { gap: 16px; }
+  .patient-details { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .patient-details > fieldset { grid-column: 1 / -1; }
+  .patient-details .field-label { font-size: 14px; }
+  textarea, .age-input input, .age-input select, .gender-select { font-size: 16px; }
+  .choice { min-height: 44px; }
+  .body-options .field-label { font-size: 14px; }
+  .body-options .hint { font-size: 12px; }
+  .body-layout:not(.has-detail) { grid-template-columns: 105px minmax(0, 1fr); gap: 12px; }
+  .body-layout:not(.has-detail) .body-canvas { width: 100%; padding: 8px 4px; }
+  .body-layout:not(.has-detail) .body-canvas > svg { width: 100%; height: 260px; }
+  .zone-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; }
+  .zone-option { font-size: 12px; min-height: 36px; padding: 5px; }
+  .detail-options button { min-height: 36px; }
+  .review-summary > div { grid-template-columns: 36% minmax(0, 1fr); padding: 8px 10px; }
+  .card-footer:has(.review-confirmation) { display: grid; grid-template-columns: 1fr auto; }
+  .card-footer > div:has(.review-confirmation) { display: contents; }
+  .card-footer .review-confirmation { grid-column: 1 / -1; grid-row: 1; margin: 0; }
+  .card-footer:has(.review-confirmation) > .button { grid-column: 2; }
+  .card-footer:has(.review-confirmation) .button.subtle { grid-column: 1; grid-row: 2; }
+  .page-footer { flex-wrap: wrap; justify-content: space-between; font-size: 11px; }
+  .mobile-reset { display: block; font-size: 12px; }
+}
+
 @media print {
   :root {
     background: white;

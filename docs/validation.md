@@ -23,7 +23,13 @@ Auditoría adicional con el Tev instalado, sin interceptar la inferencia, usando
 
 Estas ejecuciones demuestran que ambos recorridos son posibles; no son una evaluación clínica ni garantizan que Tev elija siempre la mejor pregunta. El texto libre puede interpretarse de manera imperfecta. Los criterios de utilidad y la lista corta no alteran las probabilidades ni imponen una pregunta para completar la demo.
 
-## Compilación y pruebas
+## Presentación de la demo, 24 de octubre de 2026
+
+La limpieza posterior de presentación se comprueba con el proyecto de escritorio del navegador configurado a 1366×768, además de los casos explícitos de 1280×720 y 1920×1080 y la variante móvil de 390×844. Las comprobaciones incluyen tamaño mínimo de los textos del modelo, rol y etiquetas, ausencia de desplazamiento en los primeros formularios y resultado principal visible sin desplazar en el recorrido estándar de escritorio. El historial opcional se abre explícitamente en el recorrido de carga de archivos.
+
+Resultado de esta revisión: compilación correcta, 14 pruebas unitarias y 28 recorridos de navegador superados; cuatro omisiones previstas de comprobaciones de escritorio en el proyecto móvil. La inspección visual adicional con un caso ficticio de muñeca no necesita desplazamiento en paciente, molestia, síntomas, revisión médica ni resultados a 1280×720 y 1366×768 con los detalles opcionales cerrados.
+
+## Compilación y pruebas iniciales (23 de octubre)
 
 | Comprobación | Resultado |
 | --- | --- |
